@@ -8,6 +8,7 @@ declaracao       = atribuicao
                  | condicional
                  | repeticao
                  | entrada_saida
+                 | ";"
                  ;
 
 (* Atribuição de valor a uma variável *)

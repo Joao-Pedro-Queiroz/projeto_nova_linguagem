@@ -26,6 +26,7 @@ entrada_saida    = ( "mostre" | "escute" ) "(" expressao ")" ";" ;
 bloco            = "{" { declaracao } "}" ;
 
 (* Expressões aritméticas e booleanas simples *)
+comparacao       = expressao { operador_comparacao expressao } ;
 expressao        = termo { operador_soma termo } ;
 termo            = fator { operador_mult fator } ;
 fator            = identificador
@@ -35,7 +36,8 @@ fator            = identificador
                  ;
 
 (* Operadores *)
-operador_soma    = "+" | "-" | ">" | "<" | "==" | "!=" | ">=" | "<=" ;
+operador_comparacao = ">" | "<" | "==" | "!=" | ">=" | "<=";
+operador_soma    = "+" | "-" ;
 operador_mult    = "*" | "/" ;
 
 (* Elementos léxicos *)

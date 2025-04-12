@@ -54,3 +54,9 @@ enquanto (idade < 25) {
     idade = idade + 1 ;
     mostre(idade) ;
 }
+
+mostre("Qual é o seu filme favorito?") ;
+guarde filme como escute() ;
+
+mostre("Você escolheu:") ;
+mostre(filme) ;

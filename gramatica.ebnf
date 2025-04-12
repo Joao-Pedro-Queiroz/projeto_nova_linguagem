@@ -8,7 +8,6 @@ declaracao       = atribuicao
                  | condicional
                  | repeticao
                  | entrada_saida
-                 | ";"
                  ;
 
 (* Atribuição de valor a uma variável *)
@@ -20,8 +19,8 @@ condicional      = "se" "(" expressao ")" "entao" bloco [ "senão" bloco ] ;
 (* Estrutura de repetição *)
 repeticao        = "enquanto" "(" expressao ")" bloco ;
 
-(* Entrada (escute) ou saída (mostre) *)
-entrada_saida    = ( "mostre" | "escute" ) "(" expressao ")" ";" ;
+(* Entrada (mostre) ou leitura isolada (escute) *)
+entrada_saida    = "mostre" "(" expressao ")" ";" ;
 
 (* Bloco de declarações delimitado por chaves *)
 bloco            = "{" { declaracao } "}" ;
@@ -33,11 +32,11 @@ termo            = fator { operador_mult fator } ;
 fator            = identificador
                  | numero
                  | texto
-                 | "(" expressao ")"
-                 ;
+                 | "escute" "(" ")"
+                 | "(" expressao ")" ;
 
 (* Operadores *)
-operador_comparacao = ">" | "<" | "==" | "!=" | ">=" | "<=";
+operador_comparacao = ">" | "<" | "==" | "!=" | ">=" | "<=" ;
 operador_soma    = "+" | "-" ;
 operador_mult    = "*" | "/" ;
 

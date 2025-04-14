@@ -42,23 +42,23 @@ A gramática da AfetoLang foi especificada segundo o padrão **EBNF** e pode ser
 
 ```afeto
 {
-guarde nome como "Maria" ;
-guarde idade como 21 ;
+    guarde nome como "Maria" ;
+    guarde idade como 21 ;
 
-se (idade > 18) entao {
-    mostre("Você é maior de idade.") ;
-} senão {
-    mostre("Você é menor de idade.") ;
-}
+    se (idade > 18) entao {
+        mostre("Você é maior de idade.") ;
+    } senão {
+        mostre("Você é menor de idade.") ;
+    }
 
-enquanto (idade < 25) {
-    idade = idade + 1 ;
-    mostre(idade) ;
-}
+    enquanto (idade < 25) {
+        idade = idade + 1 ;
+        mostre(idade) ;
+    }
 
-mostre("Qual é o seu filme favorito?") ;
-guarde filme como escute() ;
+    mostre("Qual é o seu filme favorito?") ;
+    guarde filme como escute() ;
 
-mostre("Você escolheu:") ;
-mostre(filme) ;
+    mostre("Você escolheu:") ;
+    mostre(filme) ;
 }

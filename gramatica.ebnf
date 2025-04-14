@@ -1,8 +1,5 @@
 (* gramatica.ebnf - Definição da gramática da linguagem AfetoLang *)
 
-(* Programa completo composto por várias declarações *)
-programa         = { bloco } ;
-
 (* Bloco de declarações delimitado por chaves *)
 bloco            = "{" { declaracao } "}" ;
 

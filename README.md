@@ -41,6 +41,7 @@ A gramática da AfetoLang foi especificada segundo o padrão **EBNF** e pode ser
 ## 📚 Exemplo de Código
 
 ```afeto
+{
 guarde nome como "Maria" ;
 guarde idade como 21 ;
 
@@ -60,3 +61,4 @@ guarde filme como escute() ;
 
 mostre("Você escolheu:") ;
 mostre(filme) ;
+}

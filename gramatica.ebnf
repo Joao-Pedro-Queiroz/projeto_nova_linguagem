@@ -1,13 +1,16 @@
 (* gramatica.ebnf - Definição da gramática da linguagem AfetoLang *)
 
 (* Programa completo composto por várias declarações *)
-programa         = { declaracao } ;
+programa         = { bloco } ;
+
+(* Bloco de declarações delimitado por chaves *)
+bloco            = "{" { declaracao } "}" ;
 
 (* Tipos de declaração possíveis *)
 declaracao       = atribuicao
                  | condicional
                  | repeticao
-                 | entrada_saida
+                 | entrada
                  ;
 
 (* Atribuição de valor a uma variável *)
@@ -20,10 +23,7 @@ condicional      = "se" "(" expressao ")" "entao" bloco [ "senão" bloco ] ;
 repeticao        = "enquanto" "(" expressao ")" bloco ;
 
 (* Entrada (mostre) ou leitura isolada (escute) *)
-entrada_saida    = "mostre" "(" expressao ")" ";" ;
-
-(* Bloco de declarações delimitado por chaves *)
-bloco            = "{" { declaracao } "}" ;
+entrada    = "mostre" "(" expressao ")" ";" ;
 
 (* Expressões aritméticas e booleanas simples *)
 comparacao       = expressao { operador_comparacao expressao } ;
@@ -32,6 +32,8 @@ termo            = fator { operador_mult fator } ;
 fator            = identificador
                  | numero
                  | texto
+                 | "+" fator
+                 | "-" fator
                  | "escute" "(" ")"
                  | "(" expressao ")" ;
 

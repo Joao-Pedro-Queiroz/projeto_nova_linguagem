@@ -1,6 +1,6 @@
 # 🌱 Projeto Nova Linguagem – AfetoLang
 
-Bem-vinde ao repositório do **Projeto Nova Linguagem**, parte da disciplina de Construção de Compiladores.
+Bem-vindo ao repositório do **Projeto Nova Linguagem**, parte da disciplina de Linguagens e Paradígmas.
 
 Aqui desenvolvemos a **AfetoLang**, uma linguagem de programação inclusiva, acolhedora e com foco em facilitar o aprendizado para qualquer pessoa, independentemente de sua bagagem técnica ou social.
 
@@ -12,7 +12,7 @@ Queremos quebrar as barreiras da linguagem tradicional de programação, que mui
 
 A **AfetoLang** busca:
 
-- Promover **inclusividade linguística**, usando palavras em português neutro e acessível.
+- Promover **inclusividade linguística**, usando palavras em português acessível.
 - Reduzir o medo de quem está começando a programar.
 - Estimular uma relação mais humana e empática com o código.
 

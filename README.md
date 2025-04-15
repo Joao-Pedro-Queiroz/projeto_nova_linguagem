@@ -27,6 +27,7 @@ A **AfetoLang** busca:
   - Condicionais com `se`, `entao` e `senão`
   - Loops com `enquanto`
   - Entrada e saída com `escute` e `mostre`
+  - Comentários de linha única: `informe`
 
 ---
 
@@ -45,6 +46,7 @@ A gramática da AfetoLang foi especificada segundo o padrão **EBNF** e pode ser
     guarde nome como "Maria" ;
     guarde idade como 21 ;
 
+    informe "Verificando a idade de Maria."
     se (idade > 18) entao {
         mostre("Você é maior de idade.") ;
     } senão {

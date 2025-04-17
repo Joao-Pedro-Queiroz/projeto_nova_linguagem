@@ -26,13 +26,8 @@ int yylex();
 
 bloco:
     ABRECHAVE
-    lista_declaracoes
+    declaracao
     FECHACHAVE
-;
-
-lista_declaracoes:
-    /* vazio */
-  | lista_declaracoes declaracao
 ;
 
 declaracao:

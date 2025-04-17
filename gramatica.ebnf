@@ -11,16 +11,16 @@ declaracao       = atribuicao
                  ;
 
 (* Atribuição de valor a uma variável *)
-atribuicao       = "guarde" identificador "como" expressao ";" ;
+atribuicao       = "guarde" identificador "como" comparacao ";" ;
 
 (* Estrutura condicional *)
-condicional      = "se" "(" expressao ")" "entao" bloco [ "senão" bloco ] ;
+condicional      = "se" "(" comparacao ")" "entao" bloco [ "senão" bloco ] ;
 
 (* Estrutura de repetição *)
-repeticao        = "enquanto" "(" expressao ")" bloco ;
+repeticao        = "enquanto" "(" comparacao ")" bloco ;
 
 (* Entrada (mostre) ou leitura isolada (escute) *)
-entrada    = "mostre" "(" expressao ")" ";" ;
+entrada    = "mostre" "(" comparacao ")" ";" ;
 
 (* Expressões aritméticas e booleanas simples *)
 comparacao       = expressao { operador_comparacao expressao } ;
@@ -32,7 +32,7 @@ fator            = identificador
                  | "+" fator
                  | "-" fator
                  | "escute" "(" ")"
-                 | "(" expressao ")" ;
+                 | "(" comparacao ")" ;
 
 (* Operadores *)
 operador_comparacao = ">" | "<" | "==" | "!=" | ">=" | "<=" ;

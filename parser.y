@@ -35,7 +35,6 @@ declaracao:
   | condicional
   | repeticao
   | entrada
-  | comentario
 ;
 
 atribuicao:

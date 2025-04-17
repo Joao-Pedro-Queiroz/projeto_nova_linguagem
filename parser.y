@@ -25,9 +25,12 @@ int yylex();
 %%
 
 bloco:
-    ABRECHAVE
-    declaracao
-    FECHACHAVE
+    ABRECHAVE lista_declaracoes FECHACHAVE
+;
+
+lista_declaracoes:
+    /* vazio */
+  | lista_declaracoes declaracao
 ;
 
 declaracao:
@@ -38,42 +41,66 @@ declaracao:
 ;
 
 atribuicao:
-    GUARDE IDENTIFICADOR COMO expressao PONTOVIRG
+    GUARDE IDENTIFICADOR COMO comparacao PONTOVIRG
 ;
 
 condicional:
-    SE ABREPAR expressao FECHAPAR ENTAO bloco
+    SE ABREPAR comparacao FECHAPAR ENTAO bloco
     [ SENAO bloco ]
 ;
 
 repeticao:
-    ENQUANTO ABREPAR expressao FECHAPAR bloco
+    ENQUANTO ABREPAR comparacao FECHAPAR bloco
 ;
 
 entrada:
-    MOSTRE ABREPAR expressao FECHAPAR PONTOVIRG
+    MOSTRE ABREPAR comparacao FECHAPAR PONTOVIRG
 ;
 
 comparacao:
-    expressao IGUAL expressao
-  | expressao DIFERENTE expressao
-  | expressao NAIORIGUAL expressao
-  | expressao MENORIGUAL expressao
-  | expressao NAIOR expressao
-  | expressao MENOR expressao
-  | expressao
+    expressao comparacao_sufixo
+;
+
+comparacao_sufixo:
+    /* vazio */ 
+  | operador_comparacao expressao comparacao_sufixo
+;
+
+operador_comparacao:
+    IGUAL
+  | DIFERENTE
+  | MAIOR
+  | MENOR
+  | MAIORIGUAL
+  | MENORIGUAL
 ;
 
 expressao:
-    termo MAIS termo
-  | termo MENOS termo
-  | termo
+   termo expressao_sufixo
+;
+
+expressao_sufixo:
+    /* vazio */ 
+  | operador_expressao termo expressao_sufixo
+;
+
+operador_expressao:
+    MAIS
+  | MENOS
 ;
 
 termo:
-    fator MULT fator
-  | fator DIV fator
-  | fator
+    fator termo_sufixo
+;
+
+termo_sufixo:
+    /* vazio */ 
+  | operador_termo fator termo_sufixo
+;
+
+operador_termo:
+    MULT
+  | DIV
 ;
 
 fator:
@@ -83,7 +110,7 @@ fator:
   | MAIS fator
   | MENOS fator
   | ESCUTE ABREPAR FECHAPAR
-  | ABREPAR expressao FECHAPAR
+  | ABREPAR comparacao FECHAPAR
 ;
 
 %%

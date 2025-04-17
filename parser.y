@@ -54,15 +54,25 @@ entrada:
     MOSTRE ABREPAR expressao FECHAPAR PONTOVIRG
 ;
 
+comparacao:
+    expressao IGUAL expressao
+  | expressao DIFERENTE expressao
+  | expressao NAIORIGUAL expressao
+  | expressao MENORIGUAL expressao
+  | expressao NAIOR expressao
+  | expressao MENOR expressao
+  | expressao
+;
+
 expressao:
-    expressao MAIS termo
-  | expressao MENOS termo
+    termo MAIS termo
+  | termo MENOS termo
   | termo
 ;
 
 termo:
-    termo MULT fator
-  | termo DIV fator
+    fator MULT fator
+  | fator DIV fator
   | fator
 ;
 
@@ -70,6 +80,8 @@ fator:
     IDENTIFICADOR
   | NUMERO
   | TEXTO
+  | MAIS fator
+  | MENOS fator
   | ESCUTE ABREPAR FECHAPAR
   | ABREPAR expressao FECHAPAR
 ;

@@ -8,6 +8,9 @@
 %%
 
 "ato"         { return ATO; }
+"com"         { return COM; }
+"duracao"     { return DURACAO; }
+
 "cena"        { return CENA; }
 "se"          { return SE; }
 "entao"       { return ENTAO; }

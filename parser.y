@@ -15,14 +15,21 @@ int yylex();
 %token <num> NUMERO
 %token <texto> TEXTO
 
-%token GUARDE COMO SE ENTAO SENAO ENQUANTO MOSTRE ESCUTE INFORME
+%token ATO CENA
+%token DIRETOR ATOR COMO
+%token SE ENTAO SENAO ENQUANTO
+%token FALE IMPROVISO
 %token ABREPAR FECHAPAR ABRECHAVE FECHACHAVE PONTOVIRG
 %token IGUAL DIFERENTE MAIOR MENOR MAIORIGUAL MENORIGUAL
 %token MAIS MENOS MULT DIV
 
-%start bloco
+%start programa
 
 %%
+
+programa:
+    ATO IDENTIFICADOR bloco
+;
 
 bloco:
     ABRECHAVE lista_declaracoes FECHACHAVE
@@ -37,24 +44,33 @@ declaracao:
     atribuicao
   | condicional
   | repeticao
+  | fala
   | entrada
 ;
 
 atribuicao:
-    GUARDE IDENTIFICADOR COMO comparacao PONTOVIRG
+    DIRETOR IDENTIFICADOR COMO comparacao PONTOVIRG
 ;
 
 condicional:
-    SE ABREPAR comparacao FECHAPAR ENTAO bloco
-    [ SENAO bloco ]
+    SE ABREPAR comparacao FECHAPAR ENTAO cena
+    [ SENAO cena ]
 ;
 
 repeticao:
-    ENQUANTO ABREPAR comparacao FECHAPAR bloco
+    ENQUANTO ABREPAR comparacao FECHAPAR cena
+;
+
+fala:
+    FALE ABREPAR comparacao FECHAPAR PONTOVIRG
 ;
 
 entrada:
-    MOSTRE ABREPAR comparacao FECHAPAR PONTOVIRG
+    ATOR IDENTIFICADOR COMO IMPROVISO ABREPAR FECHAPAR PONTOVIRG
+;
+
+cena:
+    CENA bloco
 ;
 
 comparacao:
@@ -76,7 +92,7 @@ operador_comparacao:
 ;
 
 expressao:
-   termo expressao_sufixo
+    termo expressao_sufixo
 ;
 
 expressao_sufixo:
@@ -109,7 +125,6 @@ fator:
   | TEXTO
   | MAIS fator
   | MENOS fator
-  | ESCUTE ABREPAR FECHAPAR
   | ABREPAR comparacao FECHAPAR
 ;
 

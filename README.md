@@ -27,11 +27,29 @@ Inspirada em roteiros teatrais, **TeatroLang** substitui termos técnicos por ex
 
 ---
 
+### ⏳ Tempo de Duração da Peça
+
+Assim como uma peça teatral tem uma duração determinada, um programa em **TeatroLang** também possui um **tempo máximo de execução**, definido em minutos.
+
+Essa duração é declarada na abertura da peça, como no exemplo abaixo:
+
+```teatro
+ato principal com duracao 10 {
+    // ações da peça
+}
+```
+Cada declaração executável consome 1 minuto da duração total da peça — seja uma fala, uma atribuição, uma entrada, uma cena condicional, ou uma repetição.
+
+Quando o tempo se esgota, a peça termina automaticamente, encerrando a execução do programa — como o fim de uma apresentação no teatro.
+
+---
+
 ## 🧠 Principais Palavras-Chave
 
 | Palavra-chave    | Significado                                                                 |
 |------------------|-----------------------------------------------------------------------------|
 | `ato`            | Define o início de uma peça/programa. É o ponto de entrada do código.       |
+| `com duracao`    | Define o tempo máximo (em minutos) da execução da peça.                     |
 | `cena`           | Representa o bloco de ações que acontece dentro de uma estrutura de controle. |
 | `se (...) entao` | Define uma condição. Se for verdadeira, executa a `cena` correspondente.    |
 | `senao`          | Bloco alternativo, executado quando a condição do `se` for falsa.           |
@@ -85,7 +103,8 @@ Com a **TeatroLang**, a programação se transforma em um ato criativo e colabor
 ## 📚 Exemplo de Código
 
 ```teatro
-ato principal {
+// A peça dura no máximo 30 minutos
+ato principal com duracao 30 {
     diretor nome como "Julieta" ;
     diretor idade como 16 ;
 

@@ -1,49 +1,49 @@
-ato             = "ato" identificador bloco ;
+ato             = "ato" identificador "com" "duracao" numero bloco ;
 
-bloco             =  "{" { declaracao } "}" ;
+bloco           =  "{" { declaracao } "}" ;
 
-declaracao       = atribuicao
-                 | condicional
-                 | repeticao
-                 | fala
-                 | entrada ;
+declaracao      = atribuicao
+                | condicional
+                | repeticao
+                | fala
+                | entrada ;
 
 (* Atribuição de valor a um personagem (variável) *)
-atribuicao       = "diretor" identificador "como" comparacao ";" ;
+atribuicao      = "diretor" identificador "como" comparacao ";" ;
 
 (* Estrutura de condição e repetição *)
-condicional      = "se" "(" comparacao ")" "entao" cena [ "senao" cena ] ;
+condicional     = "se" "(" comparacao ")" "entao" cena [ "senao" cena ] ;
 
-repeticao        = "enquanto" "(" comparacao ")" cena ;
+repeticao       = "enquanto" "(" comparacao ")" cena ;
 
-cena             = "cena" bloco ;
+cena            = "cena" bloco ;
 
 (* Fala exibida na peça *)
 fala            = "fale" "(" comparacao ")" ";" ;
 
 (* Entrada improvisada *)
-entrada          = "ator" identificador "como" "improviso" "(" ")" ";" ;
+entrada         = "ator" identificador "como" "improviso" "(" ")" ";" ;
 
 (* Expressões *)
-comparacao       = expressao { operador_comparacao expressao } ;
-expressao        = termo { operador_soma termo } ;
-termo            = fator { operador_mult fator } ;
-fator            = identificador
-                 | numero
-                 | texto
-                 | "+" fator
-                 | "-" fator
-                 | "(" comparacao ")" ;
+comparacao      = expressao { operador_comparacao expressao } ;
+expressao       = termo { operador_soma termo } ;
+termo           = fator { operador_mult fator } ;
+fator           = identificador
+                | numero
+                | texto
+                | "+" fator
+                | "-" fator
+                | "(" comparacao ")" ;
 
 (* Operadores *)
 operador_comparacao = ">" | "<" | "==" | "!=" | ">=" | "<=" ;
-operador_soma    = "+" | "-" ;
-operador_mult    = "*" | "/" ;
+operador_soma       = "+" | "-" ;
+operador_mult       = "*" | "/" ;
 
 (* Elementos léxicos *)
-identificador     = letra { letra | "_" | digito } ;
-numero            = digito { digito } ;
-texto             = '"' { caractere_sem_aspas } '"' ;
+identificador    = letra { letra | "_" | digito } ;
+numero           = digito { digito } ;
+texto            = '"' { caractere_sem_aspas } '"' ;
 
 (* Conjuntos auxiliares *)
 letra             = "a" | "b" | ... | "z" | "A" | "B" | ... | "Z" ;

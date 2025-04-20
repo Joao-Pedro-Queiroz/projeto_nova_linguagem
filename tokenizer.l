@@ -1,18 +1,24 @@
 %{
 #include "parser.tab.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 %}
 
 %%
 
-"guarde"      { return GUARDE; }
-"como"        { return COMO; }
+"ato"         { return ATO; }
+"cena"        { return CENA; }
 "se"          { return SE; }
 "entao"       { return ENTAO; }
-"senão"       { return SENAO; }
+"senao"       { return SENAO; }
 "enquanto"    { return ENQUANTO; }
-"mostre"      { return MOSTRE; }
-"escute"      { return ESCUTE; }
+
+"diretor"     { return DIRETOR; }
+"ator"        { return ATOR; }
+"como"        { return COMO; }
+"fale"        { return FALE; }
+"improviso"   { return IMPROVISO; }
 
 [0-9]+        { yylval.num = atoi(yytext); return NUMERO; }
 \"[^\"]*\"    { yylval.texto = strdup(yytext); return TEXTO; }

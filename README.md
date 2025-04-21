@@ -38,58 +38,12 @@ A linguagem substitui elementos técnicos comuns por termos mais acessíveis e f
 | `quando (...)`      | Condicional (if).                                                           |
 | `senao`             | Bloco alternativo ao condicional.                                           |
 | `enquanto (...)`    | Laço de repetição.                                                          |
-| `é igual`, `maior`, `menor` | Operadores relacionais (`==`, `>`, `<`).                            |
+| `igual`, `maior`, `menor` | Operadores relacionais (`==`, `>`, `<`).                            |
 | `ou`, `e`           | Operadores lógicos (`||`, `&&`).                                            |
 | `mais`, `menos`, `concatena` | Operadores aritméticos (`+`, `-`, `++`).                              |
 | `vezes`, `dividido` | Multiplicação e divisão (`*`, `/`).                                         |
 | `nao`               | Negação lógica (`!`).                                                       |
 | `;`                 | Final da instrução.                                                         |
-
----
-
-## 🔤 Estrutura Gramatical (EBNF)
-
-A estrutura da **LumenScript** está baseada na EBNF tradicional com nomes acessíveis e semanticamente descritivos:
-
-```ebnf
-BlocoPrincipal     = "inicio", { Instrucao }, "fim" ;
-
-Instrucao          = ";"
-                   | identificador "é" ExpressaoOu ";"
-                   | "exibir" "(" ExpressaoOu ")" ";"
-                   | "guardar" identificador "em" tipo [ "com" ExpressaoOu ] ";"
-                   | "quando" "(" ExpressaoOu ")" BlocoPrincipal [ "senao" BlocoPrincipal ]
-                   | "enquanto" "(" ExpressaoOu ")" BlocoPrincipal ;
-
-ExpressaoOu        = ExpressaoE { "ou" ExpressaoE } ;
-
-ExpressaoE         = ExpressaoRel { "e" ExpressaoRel } ;
-
-ExpressaoRel       = Expressao [ OperadorRelacional Expressao ] ;
-
-Expressao          = Termo { ("mais" | "menos" | "concatena") Termo } ;
-
-Termo              = Fator { ("vezes" | "dividido") Fator } ;
-
-Fator              = numero
-                   | texto
-                   | booleano
-                   | identificador
-                   | "mais" Fator
-                   | "menos" Fator
-                   | "nao" Fator
-                   | "(" ExpressaoOu ")"
-                   | "perguntar" "(" ")" ;
-
-OperadorRelacional = "é igual" | "maior" | "menor" ;
-
-tipo               = "numero" | "verdadeiro" | "texto" ;
-
-identificador      = letra { letra | digito | "_" } ;
-numero             = digito { digito } ;
-texto              = '"' { qualquer_caractere_que_nao_seja_aspas } '"' ;
-booleano           = "sim" | "nao" ;
-```
 
 ---
 
@@ -248,8 +202,8 @@ Se você acredita que tecnologia deve ser para todos, a LumenScript te convida a
 ```
 inicio
 
-    guardar nome em texto com "Carlos" ;
-    guardar idade em numero com 17 ;
+    guardar nome como texto com "Carlos" ;
+    guardar idade como numero com 17 ;
 
     exibir("Verificando idade...") ;
 

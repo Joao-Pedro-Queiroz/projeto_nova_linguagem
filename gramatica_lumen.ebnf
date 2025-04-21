@@ -3,7 +3,7 @@ BlocoPrincipal     = "inicio", { Instrucao }, "fim" ;
 Instrucao          = ";"
                    | identificador "é" ExpressaoOu ";"
                    | "exibir" "(" ExpressaoOu ")" ";"
-                   | "guardar" identificador "em" tipo [ "com" ExpressaoOu ] ";"
+                   | "guardar" identificador "como" tipo [ "com" ExpressaoOu ] ";"
                    | "quando" "(" ExpressaoOu ")" BlocoPrincipal [ "senao" BlocoPrincipal ]
                    | "enquanto" "(" ExpressaoOu ")" BlocoPrincipal ;
 
@@ -27,11 +27,11 @@ Fator              = numero
                    | "(" ExpressaoOu ")"
                    | "perguntar" "(" ")" ;
 
-OperadorRelacional = "é igual" | "maior" | "menor" ;
+OperadorRelacional = "igual" | "maior" | "menor" ;
 
-tipo               = "numero" | "verdadeiro" | "texto" ;
+tipo               = "numero" | "booleano" | "texto" ;
 
 identificador      = letra { letra | digito | "_" } ;
 numero             = digito { digito } ;
 texto              = '"' { qualquer_caractere_que_nao_seja_aspas } '"' ;
-booleano           = "sim" | "nao" ;
+booleano           = "verdadeiro" | "falso" ;

@@ -7,45 +7,50 @@
 
 %%
 
-"ato"         { return ATO; }
-"com"         { return COM; }
-"duracao"     { return DURACAO; }
+"inicio"            { return INICIO; }
+"fim"               { return FIM; }
 
-"cena"        { return CENA; }
-"se"          { return SE; }
-"entao"       { return ENTAO; }
-"senao"       { return SENAO; }
-"enquanto"    { return ENQUANTO; }
+"é"                 { return É; }
+"exibir"            { return EXIBIR; }
+"guardar"           { return GUARDAR; }
+"como"              { return COMO; }
+"com"               { return COM; }
+"quando"            { return QUANDO; }
+"senao"             { return SENAO; }
+"enquanto"          { return ENQUANTO; }
 
-"diretor"     { return DIRETOR; }
-"ator"        { return ATOR; }
-"como"        { return COMO; }
-"fale"        { return FALE; }
-"improviso"   { return IMPROVISO; }
+"ou"                { return OU; }
+"e"                 { return E; }
 
-[0-9]+        { yylval.num = atoi(yytext); return NUMERO; }
-\"[^\"]*\"    { yylval.texto = strdup(yytext); return TEXTO; }
+"igual"             { return IGUAL; }
+"maior"             { return MAIOR; }
+"menor"             { return MENOR; }
+
+"mais"              { return MAIS; }
+"menos"             { return MENOS; }
+"concatena"         { return CONCATENA; }
+"vezes"             { return MULT; }
+"dividido"          { return DIV; }
+"nao"               { return NAO; }
+"perguntar"         { return PERGUNTAR; }
+
+"numero"            { return TIPO_NUMERO; }
+"booleano"          { return TIPO_BOOL; }
+"texto"             { return TIPO_TEXTO; }
+
+[0-9]+              { yylval.num = atoi(yytext); return NUMERO; }
+"verdadeiro"        { yylval.booleano = 1; return BOOL; }
+"falso"             { yylval.booleano = 0; return BOOL; }
+\"[^\"]*\"          { yylval.texto = strdup(yytext); return TEXTO; }
 
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.id = strdup(yytext); return IDENTIFICADOR; }
 
-"("           { return ABREPAR; }
-")"           { return FECHAPAR; }
-"{"           { return ABRECHAVE; }
-"}"           { return FECHACHAVE; }
-";"           { return PONTOVIRG; }
-"=="          { return IGUAL; }
-"!="          { return DIFERENTE; }
-">="          { return MAIORIGUAL; }
-"<="          { return MENORIGUAL; }
-">"           { return MAIOR; }
-"<"           { return MENOR; }
-"+"           { return MAIS; }
-"-"           { return MENOS; }
-"*"           { return MULT; }
-"/"           { return DIV; }
+"("                 { return ABREPAR; }
+")"                 { return FECHAPAR; }
+";"                 { return PONTOVIRG; }
 
-[ \t\n]+      { /* Ignorar espaços e quebras de linha */ }
+[ \t\r\n]+          { /* Ignorar espaços, tabulações e quebras de linha */ }
 
-.             { printf("Caractere inválido: %s\n", yytext); }
+.                   { printf("Caractere inválido: %s\n", yytext); }
 
-%%
+%% 

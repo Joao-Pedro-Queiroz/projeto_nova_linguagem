@@ -7,6 +7,7 @@ int yylex();
 
 %union {
     int num;
+    int booleano;
     char* texto;
     char* id;
 }
@@ -14,82 +15,96 @@ int yylex();
 %token <id> IDENTIFICADOR
 %token <num> NUMERO
 %token <texto> TEXTO
+%token <booleano> BOOL
 
-%token ATO CENA
-%token DIRETOR ATOR COMO
-%token SE ENTAO SENAO ENQUANTO
-%token FALE IMPROVISO
-%token COM DURACAO
-%token ABREPAR FECHAPAR ABRECHAVE FECHACHAVE PONTOVIRG
-%token IGUAL DIFERENTE MAIOR MENOR MAIORIGUAL MENORIGUAL
-%token MAIS MENOS MULT DIV
+%token INICIO FIM
+%token GUARDAR COMO COM
+%token EXIBIR PERGUNTAR
+%token QUANDO ENTAO SENAO
+%token ENQUANTO
+%token MAIS MENOS CONCATENA MULT DIV
+%token NAO
+%token É
+%token IGUAL MAIOR MENOR
+%token OU E
+
+%token TIPO_NUMERO TIPO_BOOL TIPO_TEXTO
+
+%token ABREPAR FECHAPAR PONTOVIRG
 
 %start programa
 
 %%
 
 programa:
-    ATO IDENTIFICADOR COM DURACAO NUMERO bloco
+    INICIO lista_instrucao FIM
+;
+
+lista_instrucao:
+    /* vazio */
+  | lista_instrucao instrucao
+;
+
+instrucao:
+    PONTOVIRG
+  | IDENTIFICADOR É expressao_ou PONTOVIRG
+  | EXIBIR ABREPAR expressao_ou FECHAPAR PONTOVIRG
+  | GUARDAR IDENTIFICADOR COMO tipo opcional_com PONTOVIRG
+  | QUANDO ABREPAR expressao_ou FECHAPAR bloco opcional_senao
+  | ENQUANTO ABREPAR expressao_ou FECHAPAR bloco
+;
+
+opcional_com:
+    /* vazio */
+  | COM expressao_ou
+;
+
+opcional_senao:
+    /* vazio */
+  | SENAO bloco
 ;
 
 bloco:
-    ABRECHAVE lista_declaracoes FECHACHAVE
+    INICIO lista_instrucao FIM
 ;
 
-lista_declaracoes:
+tipo:
+    TIPO_NUMERO
+  | TIPO_BOOL
+  | TIPO_TEXTO
+;
+
+expressao_ou:
+    expressao_e expressao_ou_sufixo
+;
+
+expressao_ou_sufixo:
     /* vazio */
-  | lista_declaracoes declaracao
+  | OU expressao_e expressao_ou_sufixo
 ;
 
-declaracao:
-    atribuicao
-  | condicional
-  | repeticao
-  | fala
-  | entrada
+expressao_e:
+    expressao_rel expressao_e_sufixo
 ;
 
-atribuicao:
-    DIRETOR IDENTIFICADOR COMO comparacao PONTOVIRG
+expressao_e_sufixo:
+    /* vazio */
+  | E expressao_rel expressao_e_sufixo
 ;
 
-condicional:
-    SE ABREPAR comparacao FECHAPAR ENTAO cena
-    [ SENAO cena ]
-;
-
-repeticao:
-    ENQUANTO ABREPAR comparacao FECHAPAR cena
-;
-
-fala:
-    FALE ABREPAR comparacao FECHAPAR PONTOVIRG
-;
-
-entrada:
-    ATOR IDENTIFICADOR COMO IMPROVISO ABREPAR FECHAPAR PONTOVIRG
-;
-
-cena:
-    CENA bloco
-;
-
-comparacao:
+expressao_rel:
     expressao comparacao_sufixo
 ;
 
 comparacao_sufixo:
-    /* vazio */ 
-  | operador_comparacao expressao comparacao_sufixo
+    /* vazio */
+  | operador_relacional expressao comparacao_sufixo
 ;
 
-operador_comparacao:
+operador_relacional:
     IGUAL
-  | DIFERENTE
   | MAIOR
   | MENOR
-  | MAIORIGUAL
-  | MENORIGUAL
 ;
 
 expressao:
@@ -97,13 +112,14 @@ expressao:
 ;
 
 expressao_sufixo:
-    /* vazio */ 
+    /* vazio */
   | operador_expressao termo expressao_sufixo
 ;
 
 operador_expressao:
     MAIS
   | MENOS
+  | CONCATENA
 ;
 
 termo:
@@ -111,7 +127,7 @@ termo:
 ;
 
 termo_sufixo:
-    /* vazio */ 
+    /* vazio */
   | operador_termo fator termo_sufixo
 ;
 
@@ -121,12 +137,15 @@ operador_termo:
 ;
 
 fator:
-    IDENTIFICADOR
-  | NUMERO
+    NUMERO
   | TEXTO
+  | BOOL
+  | IDENTIFICADOR
   | MAIS fator
   | MENOS fator
-  | ABREPAR comparacao FECHAPAR
+  | NAO fator
+  | ABREPAR expressao_ou FECHAPAR
+  | PERGUNTAR ABREPAR FECHAPAR
 ;
 
 %%

@@ -11,7 +11,7 @@ ExpressaoOu        = ExpressaoE { "ou" ExpressaoE } ;
 
 ExpressaoE         = ExpressaoRel { "e" ExpressaoRel } ;
 
-ExpressaoRel       = Expressao [ OperadorRelacional Expressao ] ;
+ExpressaoRel       = Expressao { OperadorRelacional Expressao } ;
 
 Expressao          = Termo { ("mais" | "menos" | "concatena") Termo } ;
 

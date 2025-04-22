@@ -22,27 +22,30 @@ A linguagem substitui elementos técnicos comuns por termos mais acessíveis e f
 - **Vocabulário em português simples**;
 - **Objetividade nas instruções**.
 
+Além disso, todos os comandos e palavras-chave da LumenScript são escritos em LETRAS MAIÚSCULAS, o que melhora a leitura com lupas digitais e amplia a visibilidade para usuários com baixa acuidade visual. Essa escolha foi pensada para maximizar o contraste visual e tornar cada instrução facilmente distinguível dentro do código.
+
 ---
 
 ## 🧠 Palavras-chave e Significados
 
 | Palavra-chave       | Significado                                                                 |
 |---------------------|-----------------------------------------------------------------------------|
-| `inicio`            | Início do bloco principal do programa.                                      |
-| `fim`               | Final de um bloco de código.                                                |
-| `exibir(...)`       | Exibe informação na tela. Equivalente ao `print(...)`.                      |
-| `perguntar(...)`    | Solicita entrada do usuário. Equivalente ao `reader()` ou `input()`.        |
-| `guardar`           | Declara uma variável.                                                       |
-| `em`                | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
-| `com`               | Opcional: atribui valor inicial à variável.                                 |
-| `quando (...)`      | Condicional (if).                                                           |
-| `senao`             | Bloco alternativo ao condicional.                                           |
-| `enquanto (...)`    | Laço de repetição.                                                          |
-| `igual`, `maior`, `menor` | Operadores relacionais (`==`, `>`, `<`).                            |
-| `ou`, `e`           | Operadores lógicos (`||`, `&&`).                                            |
-| `mais`, `menos`, `concatena` | Operadores aritméticos (`+`, `-`, `++`).                              |
-| `vezes`, `dividido` | Multiplicação e divisão (`*`, `/`).                                         |
-| `nao`               | Negação lógica (`!`).                                                       |
+| `INICIO`            | Início do bloco principal do programa.                                      |
+| `FIM`               | Final de um bloco de código.                                                |
+| `EXIBIR(...)`       | Exibe informação na tela. Equivalente ao `print(...)`.                      |
+| `PERGUNTAR(...)`    | Solicita entrada do usuário. Equivalente ao `reader()` ou `input()`.        |
+| `GUARDAR`           | Declara uma variável.                                                       |
+| `COMO`                | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
+| `COM`               | Opcional: atribui valor inicial à variável.
+| `É`                 | Atribui valor à variável.                                  |
+| `QUANDO (...)`      | Condicional (if).                                                           |
+| `SENAO`             | Bloco alternativo ao condicional.                                           |
+| `ENQUANTO (...)`    | Laço de repetição.                                                          |
+| `IGUAL`, `MAIOR`, `MENOR` | Operadores relacionais (`==`, `>`, `<`).                            |
+| `OU`, `E`           | Operadores lógicos (`||`, `&&`).                                            |
+| `MAIS`, `MENOS`, `CONCATENA` | Operadores aritméticos (`+`, `-`, `++`).                              |
+| `VEZES`, `DIVIDIDO` | Multiplicação e divisão (`*`, `/`).                                         |
+| `NAO`               | Negação lógica (`!`).                                                       |
 | `;`                 | Final da instrução.                                                         |
 
 ---
@@ -55,7 +58,11 @@ A **LumenScript** foi criada com um objetivo claro: tornar a programação **ace
 
 - **Acessibilidade Visual**: A linguagem foi projetada com foco em contraste, simplicidade e clareza. As palavras-chave são intuitivas e os blocos de código seguem uma estrutura limpa, facilitando o uso com leitores de tela e lupas digitais.
 
-- **Sintaxe Natural e Sem Ambiguidades**: Termos como `exibir`, `guardar`, `perguntar`, `quando`, `enquanto` e `senao` foram escolhidos por sua carga semântica clara e relação direta com ações e conceitos do cotidiano. Isso reduz a curva de aprendizado e torna a experiência de programar mais intuitiva.
+- **Foco na Lógica e Menos Uso da Visão**: Além disso, a LumenScript busca reduzir ao máximo a dependência da visão, incentivando o desenvolvimento do raciocínio lógico e da intuição do programador. Ao invés de exigir leitura visual constante, a linguagem propõe estruturas que possam ser compreendidas conceitualmente, fortalecendo o entendimento da lógica por trás do código.
+
+- **Sintaxe Natural e Sem Ambiguidades**: Termos como `EXIBIR`, `GUARDAR`, `PERGUNTAR`, `QUANDO`, `ENQUANTO` e `SENAO` foram escolhidos por sua carga semântica clara e relação direta com ações e conceitos do cotidiano. Isso reduz a curva de aprendizado e torna a experiência de programar mais intuitiva.
+
+- **Facilitar o esforço visual mesmo quando a visão é necessária**: Mesmo quando o uso da visão se faz necessário, a estrutura da LumenScript foi pensada para minimizar o esforço visual, com instruções bem separadas, sintaxe espaçada e uma leitura progressiva que acompanha o ritmo cognitivo e visual de pessoas com baixa visão.
 
 - **Inclusão como valor central**: Ao contrário de linguagens tradicionais que muitas vezes afastam iniciantes, a **LumenScript** foi construída para acolher. Seja você um desenvolvedor experiente com deficiência visual ou alguém dando os primeiros passos, encontrará aqui um espaço acessível.
 
@@ -67,7 +74,7 @@ A **LumenScript** é, acima de tudo, um convite para **programar com empatia, cl
 
 ---
 
-## 🌱 Boas Práticas
+## 🌱 Boas Práticas 
 Aqui estão algumas boas práticas que podem ajudá-lo a escrever código limpo, legível e acessível usando a LumenScript:
 
 1. Seja Descritivo nas Variáveis e Funções
@@ -95,6 +102,9 @@ Se você está escrevendo código em um editor ou IDE, utilize temas com alto co
 
 6. Teste com Ferramentas de Acessibilidade
 Sempre que possível, teste seu código com leitores de tela ou outras ferramentas de acessibilidade. Isso pode ajudar a identificar pontos que podem ser melhorados para garantir que o código seja acessível a todos.
+
+7. Use LETRAS MAIÚSCULAS para comandos
+Em LumenScript, todas as palavras-chave são obrigatoriamente escritas em letras maiúsculas. Isso facilita a leitura, melhora o reconhecimento visual de instruções e evita ambiguidades na interpretação do código. Variáveis e textos livres podem usar letras minúsculas ou maiúsculas conforme desejado, mas os comandos devem sempre seguir esse padrão.
 
 ---
 
@@ -177,11 +187,21 @@ A gramática completa está disponível no arquivo:
 
 ### 🎯 Destaques da Gramática
 
-- Utilização de palavras-chave acessíveis e simbólicas, como `clarear`, `ecoar`, `sentir` e `ver`.
-- Suporte para variáveis de diferentes tipos (`luz`, `forma`, `estado`), que correspondem a `número`, `texto` e `booleano`.
-- Entrada e saída amigáveis: `sentir()` para ler dados e `ecoar(...)` para exibir informações.
-- Blocos de controle intuitivos com `se`, `senao`, `enquanto`, e `visao`.
-- Estrutura de instruções clara e legível mesmo para leitores com baixa visão, com pontuação mínima e sintaxe fluida.
+A gramática da LumenScript foi cuidadosamente elaborada em EBNF (Extended Backus-Naur Form) para garantir clareza e acessibilidade em cada estrutura da linguagem. Entre os principais destaques:
+
+- Palavras-chave intuitivas e em português simples, como `EXIBIR`, `GUARDAR`, `PERGUNTAR`, `QUANDO`, `SENAO` e `ENQUANTO`, facilitando o entendimento mesmo por iniciantes ou pessoas com baixa visão.
+
+- Tipos de variáveis legíveis e descritivos, como `NUMERO`, `TEXTO` e `VERDADEIRO`, permitindo a rápida identificação do propósito de cada valor.
+
+- Declarações visuais claras com uso obrigatório de letras maiúsculas nas palavras-chave, aumentando o contraste e a legibilidade em ferramentas assistivas.
+
+- Sintaxe espaçada e sem símbolos desnecessários, com estrutura lógica bem delimitada por palavras como `INICIO` e `FIM`.
+
+- Operadores escritos por extenso, como `MAIS`, `MENOS`, `IGUAL`, `E`, `OU`, evitando confusão com símbolos semelhantes e promovendo melhor leitura com leitores de tela.
+
+- Uso de ponto e vírgula (`;`) para finalizar instruções, promovendo uma separação visual que ajuda na organização do código.
+
+Essas escolhas tornam a linguagem fácil de compreender, mesmo para quem não tem familiaridade prévia com programação, contribuindo para uma experiência mais inclusiva e humanizada.
 
 ---
 
@@ -190,6 +210,8 @@ A gramática completa está disponível no arquivo:
 A **LumenScript** é mais do que uma linguagem de programação — é uma iniciativa para aproximar o desenvolvimento de software de pessoas que enfrentam desafios visuais, tornando esse universo mais inclusivo, compreensível e acessível. 
 
 Inspirada por princípios de legibilidade, contraste e simplicidade, a LumenScript quer ser uma ponte entre tecnologia e empatia, onde todos possam criar, inovar e se expressar através do código, sem barreiras.
+
+A LumenScript também carrega uma mensagem importante: soluções simples podem ter um impacto profundo. Mesmo que sua estrutura se assemelhe a outras linguagens de programação, ela demonstra que desenvolver ferramentas inclusivas não precisa ser complexo ou inacessível. Às vezes, uma pequena adaptação é suficiente para melhorar significativamente a qualidade de vida de quem mais precisa.
 
 Se você acredita que tecnologia deve ser para todos, a LumenScript te convida a escrever com luz, propósito e acessibilidade.
 
@@ -200,33 +222,33 @@ Se você acredita que tecnologia deve ser para todos, a LumenScript te convida a
 ## 📚 Exemplo de Código
 
 ```
-inicio
+INICIO
 
-    guardar nome como texto com "Carlos" ;
-    guardar idade como numero com 17 ;
+    GUARDAR NOME COMO TEXTO COM "Carlos" ;
+    GUARDAR IDADE COMO NUMERO COM 17 ;
 
-    exibir("Verificando idade...") ;
+    EXIBIR("Verificando idade...") ;
 
-    quando (idade maior 18) 
-    inicio
-        exibir("Maior de idade.") ;
-    fim
-    senao 
-    inicio
-        exibir("Menor de idade.") ;
-    fim
+    QUANDO (IDADE MAIOR 18) 
+    INICIO
+        EXIBIR("Maior de idade.") ;
+    FIM
+    SENAO 
+    INICIO
+        EXIBIR("Menor de idade.") ;
+    FIM
 
-    enquanto (idade menor 18)
-    inicio
-        idade é idade mais 1 ;
-        exibir(idade) ;
-    fim
+    ENQUANTO (IDADE MENOR 18)
+    INICIO
+        IDADE É IDADE MAIS 1 ;
+        EXIBIR(IDADE) ;
+    FIM
 
-    exibir("Qual seu nome?") ;
-    nome é perguntar() ;
+    EXIBIR("Qual seu nome?") ;
+    NOME É PERGUNTAR() ;
 
-    exibir("Olá,") ;
-    exibir(nome) ;
+    EXIBIR("Olá,") ;
+    EXIBIR(NOME) ;
 
 fim
 ```

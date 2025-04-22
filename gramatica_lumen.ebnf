@@ -1,37 +1,43 @@
-BlocoPrincipal     = "inicio", { Instrucao }, "fim" ;
+BlocoPrincipal     = "INICIO", { Instrucao }, "FIM" ;
 
 Instrucao          = ";"
-                   | identificador "é" ExpressaoOu ";"
-                   | "exibir" "(" ExpressaoOu ")" ";"
-                   | "guardar" identificador "como" tipo [ "com" ExpressaoOu ] ";"
-                   | "quando" "(" ExpressaoOu ")" BlocoPrincipal [ "senao" BlocoPrincipal ]
-                   | "enquanto" "(" ExpressaoOu ")" BlocoPrincipal ;
+                   | identificador "É" ExpressaoOu ";"
+                   | "EXIBIR" "(" ExpressaoOu ")" ";"
+                   | "GUARDAR" identificador "COMO" tipo [ "COM" ExpressaoOu ] ";"
+                   | "QUANDO" "(" ExpressaoOu ")" BlocoPrincipal [ "SENAO" BlocoPrincipal ]
+                   | "ENQUANTO" "(" ExpressaoOu ")" BlocoPrincipal ;
 
-ExpressaoOu        = ExpressaoE { "ou" ExpressaoE } ;
+ExpressaoOu        = ExpressaoE { "OU" ExpressaoE } ;
 
-ExpressaoE         = ExpressaoRel { "e" ExpressaoRel } ;
+ExpressaoE         = ExpressaoRel { "E" ExpressaoRel } ;
 
-ExpressaoRel       = Expressao { OperadorRelacional Expressao } ;
+ExpressaoRel       = Expressao { ("IGUAL" | "MAIOR" | "MENOR") Expressao } ;
 
-Expressao          = Termo { ("mais" | "menos" | "concatena") Termo } ;
+Expressao          = Termo { ("MAIS" | "MENOS" | "CONCATENA") Termo } ;
 
-Termo              = Fator { ("vezes" | "dividido") Fator } ;
+Termo              = Fator { ("VEZES" | "DIVIDIDO") Fator } ;
 
 Fator              = numero
                    | texto
                    | booleano
                    | identificador
-                   | "mais" Fator
-                   | "menos" Fator
-                   | "nao" Fator
+                   | "MAIS" Fator
+                   | "MENOS" Fator
+                   | "NAO" Fator
                    | "(" ExpressaoOu ")"
-                   | "perguntar" "(" ")" ;
+                   | "PERGUNTAR" "(" ")" ;
 
-OperadorRelacional = "igual" | "maior" | "menor" ;
-
-tipo               = "numero" | "booleano" | "texto" ;
+tipo               = "NUMERO" | "BOOLEANO" | "TEXTO" ;
 
 identificador      = letra { letra | digito | "_" } ;
 numero             = digito { digito } ;
 texto              = '"' { qualquer_caractere_que_nao_seja_aspas } '"' ;
-booleano           = "verdadeiro" | "falso" ;
+booleano           = "VERDADEIRO" | "FALSO" ;
+
+letra             = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J"
+                    | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T"
+                    | "U" | "V" | "W" | "X" | "Y" | "Z" ;
+
+digito              = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+qualquer_caractere_que_nao_seja_aspas = ? qualquer caractere exceto aspas ? ;

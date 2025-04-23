@@ -1,7 +1,7 @@
 BlocoPrincipal     = "INICIO", { Instrucao }, "FIM" ;
 
 Instrucao          = ";"
-                   | identificador "É" ExpressaoOu ";"
+                   | identificador "RECEBE" ExpressaoOu ";"
                    | "EXIBIR" "(" ExpressaoOu ")" ";"
                    | "GUARDAR" identificador "COMO" tipo [ "COM" ExpressaoOu ] ";"
                    | "QUANDO" "(" ExpressaoOu ")" BlocoPrincipal [ "SENAO" BlocoPrincipal ]

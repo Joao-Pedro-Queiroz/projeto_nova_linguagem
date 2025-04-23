@@ -10,7 +10,7 @@
 "INICIO"            { return INICIO; }
 "FIM"               { return FIM; }
 
-"É"                 { return É; }
+"RECEBE"            { return RECEBE; }
 "EXIBIR"            { return EXIBIR; }
 "GUARDAR"           { return GUARDAR; }
 "COMO"              { return COMO; }

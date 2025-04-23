@@ -37,7 +37,7 @@ Além disso, todos os comandos e palavras-chave da LumenScript são escritos em 
 | `GUARDAR`           | Declara uma variável.                                                       |
 | `COMO`                | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
 | `COM`               | Opcional: atribui valor inicial à variável.
-| `É`                 | Atribui valor à variável.                                  |
+| `RECEBE`                 | Atribui valor à variável.                                  |
 | `QUANDO (...)`      | Condicional (if).                                                           |
 | `SENAO`             | Bloco alternativo ao condicional.                                           |
 | `ENQUANTO (...)`    | Laço de repetição.                                                          |
@@ -240,12 +240,12 @@ INICIO
 
     ENQUANTO (IDADE MENOR 18)
     INICIO
-        IDADE É IDADE MAIS 1 ;
+        IDADE RECEBE IDADE MAIS 1 ;
         EXIBIR(IDADE) ;
     FIM
 
     EXIBIR("Qual seu nome?") ;
-    NOME É PERGUNTAR() ;
+    NOME RECEBE PERGUNTAR() ;
 
     EXIBIR("Olá,") ;
     EXIBIR(NOME) ;

@@ -24,7 +24,7 @@ int yylex();
 %token ENQUANTO
 %token MAIS MENOS CONCATENA MULT DIV
 %token NAO
-%token É
+%token RECEBE
 %token IGUAL MAIOR MENOR
 %token OU E
 
@@ -47,7 +47,7 @@ lista_instrucao:
 
 instrucao:
     PONTOVIRG
-  | IDENTIFICADOR É expressao_ou PONTOVIRG
+  | IDENTIFICADOR RECEBE expressao_ou PONTOVIRG
   | EXIBIR ABREPAR expressao_ou FECHAPAR PONTOVIRG
   | GUARDAR IDENTIFICADOR COMO tipo opcional_com PONTOVIRG
   | QUANDO ABREPAR expressao_ou FECHAPAR bloco opcional_senao

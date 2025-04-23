@@ -16,12 +16,12 @@ INICIO
 
     ENQUANTO (IDADE MENOR 18)
     INICIO
-        IDADE É IDADE MAIS 1 ;
+        IDADE RECEBE IDADE MAIS 1 ;
         EXIBIR(IDADE) ;
     FIM
 
     EXIBIR("Qual seu nome?") ;
-    NOME É PERGUNTAR() ;
+    NOME RECEBE PERGUNTAR() ;
 
     EXIBIR("Olá,") ;
     EXIBIR(NOME) ;

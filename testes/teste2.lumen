@@ -1,0 +1,31 @@
+INICIO
+
+    GUARDAR NOME COMO TEXTO COM "Carlos" ;
+    GUARDAR IDADE COMO NUMERO ;
+
+    IDADE RECEBE 18;
+
+    EXIBIR("Verificando idade...") ;
+
+    QUANDO (IDADE IGUAL 18) 
+    INICIO
+        EXIBIR("Maior de idade.") ;
+    FIM
+    SENAO 
+    INICIO
+        EXIBIR("Menor de idade.") ;
+    FIM
+
+    ENQUANTO (IDADE MENOR 18)
+    INICIO
+        IDADE RECEBE IDADE MAIS 1 ;
+        EXIBIR(IDADE) ;
+    FIM
+
+    EXIBIR("Qual seu nome?") ;
+    NOME RECEBE PERGUNTAR() ;
+
+    EXIBIR("Olá,") ;
+    EXIBIR(NOME) ;
+
+FIM

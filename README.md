@@ -41,7 +41,6 @@ Além disso, todos os comandos e palavras-chave da LumenScript são escritos em 
 | `QUANDO (...)`      | Condicional (if).                                                           |
 | `SENAO`             | Bloco alternativo ao condicional.                                           |
 | `ENQUANTO (...)`    | Laço de repetição.                                                          |
-| `FACA :`            | Indica inicío de blocos de repetição e condicionais.                        |
 | `IGUAL`, `MAIOR`, `MENOR` | Operadores relacionais (`==`, `>`, `<`).                              |
 | `OU`, `E`           | Operadores lógicos (`||`, `&&`).                                            |
 | `MAIS`, `MENOS`, `CONCATENA` | Operadores aritméticos (`+`, `-`, `++`).                           |
@@ -230,16 +229,16 @@ INICIO
 
     EXIBIR("Verificando idade...") ;
 
-    QUANDO (IDADE MAIOR 18) FACA :
+    QUANDO (IDADE MAIOR 18)
     INICIO
         EXIBIR("Maior de idade.") ;
     FIM
-    SENAO FACA :
+    SENAO
     INICIO
         EXIBIR("Menor de idade.") ;
     FIM
 
-    ENQUANTO (IDADE MENOR 18) FACA :
+    ENQUANTO (IDADE MENOR 18)
     INICIO
         IDADE RECEBE IDADE MAIS 1 ;
         EXIBIR(IDADE) ;

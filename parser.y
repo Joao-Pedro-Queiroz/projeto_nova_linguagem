@@ -51,8 +51,8 @@ instrucao:
   | IDENTIFICADOR RECEBE expressao_ou PONTOVIRG
   | EXIBIR ABREPAR expressao_ou FECHAPAR PONTOVIRG
   | GUARDAR IDENTIFICADOR COMO tipo opcional_com PONTOVIRG
-  | QUANDO ABREPAR expressao_ou FECHAPAR FACA DOISPONTOS bloco opcional_senao
-  | ENQUANTO ABREPAR expressao_ou FECHAPAR FACA DOISPONTOS bloco
+  | QUANDO ABREPAR expressao_ou FECHAPAR bloco opcional_senao
+  | ENQUANTO ABREPAR expressao_ou FECHAPAR bloco
 ;
 
 opcional_com:
@@ -62,7 +62,7 @@ opcional_com:
 
 opcional_senao:
     /* vazio */
-  | SENAO FACA DOISPONTOS bloco
+  | SENAO bloco
 ;
 
 bloco:

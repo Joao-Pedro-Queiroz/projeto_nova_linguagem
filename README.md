@@ -50,7 +50,7 @@ Além disso, todos os comandos e palavras-chave da LumenScript são escritos em 
 
 ---
 
-## ✨ Por que LumenScript?
+## ✨ ✨ Por que LumenScript? Uma linguagem com propósito
 
 A **LumenScript** foi criada com um objetivo claro: tornar a programação **acessível, legível e inclusiva**, especialmente para pessoas com baixa visão. Ao repensar não apenas a sintaxe, mas também os conceitos da linguagem, buscamos construir uma ponte entre tecnologia e acessibilidade real.
 

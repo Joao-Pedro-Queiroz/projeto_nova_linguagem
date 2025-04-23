@@ -88,7 +88,7 @@ Ao nomear suas variáveis e funções, prefira nomes descritivos e claros. Evite
 Mesmo com uma sintaxe simples e clara, adicionar comentários pode ajudar a explicar partes mais complexas do código, facilitando a leitura para outras pessoas (ou para você mesmo no futuro). Em LumenScript, você pode usar o formato:
 
 ```
-informe: Este código calcula a idade de uma pessoa.
+INFORME: ESTE CÓDIGO CALCULA AIDADE DE UMA PESSOA.
 ```
 
 3. Evite Linhas de Código Longas

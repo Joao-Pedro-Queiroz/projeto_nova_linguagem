@@ -28,4 +28,6 @@ INICIO
     EXIBIR("Olá,") ;
     EXIBIR(NOME) ;
 
+    FALAR("Olá, eu sou Pedro") ;
+    
 FIM

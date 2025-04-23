@@ -19,10 +19,9 @@ int yylex();
 
 %token INICIO FIM
 %token GUARDAR COMO COM
-%token EXIBIR PERGUNTAR
+%token EXIBIR PERGUNTAR FALAR
 %token QUANDO SENAO
 %token ENQUANTO
-%token FACA
 %token MAIS MENOS CONCATENA MULT DIV
 %token NAO
 %token RECEBE
@@ -31,7 +30,7 @@ int yylex();
 
 %token TIPO_NUMERO TIPO_BOOL TIPO_TEXTO
 
-%token ABREPAR FECHAPAR PONTOVIRG DOISPONTOS
+%token ABREPAR FECHAPAR PONTOVIRG
 
 %start programa
 
@@ -50,6 +49,7 @@ instrucao:
     PONTOVIRG
   | IDENTIFICADOR RECEBE expressao_ou PONTOVIRG
   | EXIBIR ABREPAR expressao_ou FECHAPAR PONTOVIRG
+  | FALAR ABREPAR expressao_ou FECHAPAR PONTOVIRG
   | GUARDAR IDENTIFICADOR COMO tipo opcional_com PONTOVIRG
   | QUANDO ABREPAR expressao_ou FECHAPAR bloco opcional_senao
   | ENQUANTO ABREPAR expressao_ou FECHAPAR bloco

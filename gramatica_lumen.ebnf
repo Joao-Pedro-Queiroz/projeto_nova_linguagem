@@ -3,6 +3,7 @@ BlocoPrincipal     = "INICIO", { Instrucao }, "FIM" ;
 Instrucao          = ";"
                    | identificador "RECEBE" ExpressaoOu ";"
                    | "EXIBIR" "(" ExpressaoOu ")" ";"
+                   | "FALAR" "(" ExpressaoOu ")" ";"
                    | "GUARDAR" identificador "COMO" tipo [ "COM" ExpressaoOu ] ";"
                    | "QUANDO" "(" ExpressaoOu ")" BlocoPrincipal [ "SENAO" BlocoPrincipal ]
                    | "ENQUANTO" "(" ExpressaoOu ")" BlocoPrincipal ;

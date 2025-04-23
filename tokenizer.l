@@ -12,6 +12,7 @@
 
 "RECEBE"            { return RECEBE; }
 "EXIBIR"            { return EXIBIR; }
+"FALAR"             { return FALAR; }
 "GUARDAR"           { return GUARDAR; }
 "COMO"              { return COMO; }
 "COM"               { return COM; }

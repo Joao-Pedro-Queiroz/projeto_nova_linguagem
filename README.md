@@ -33,6 +33,7 @@ Além disso, todos os comandos e palavras-chave da LumenScript são escritos em 
 | `INICIO`            | Início do bloco principal do programa.                                      |
 | `FIM`               | Final de um bloco de código.                                                |
 | `EXIBIR(...)`       | Exibe informação na tela. Equivalente ao `print(...)`.                      |
+| `FALAR(...)`        | Semelhante ao `print(...)`, porém, em vez de exibir na tela, reproduz em áudio. |
 | `PERGUNTAR(...)`    | Solicita entrada do usuário. Equivalente ao `reader()` ou `input()`.        |
 | `GUARDAR`           | Declara uma variável.                                                       |
 | `COMO`              | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
@@ -249,6 +250,8 @@ INICIO
 
     EXIBIR("Olá,") ;
     EXIBIR(NOME) ;
+
+    FALAR("Olá, eu sou Pedro") ;
 
 FIM
 ```

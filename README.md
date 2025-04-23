@@ -250,5 +250,5 @@ INICIO
     EXIBIR("Olá,") ;
     EXIBIR(NOME) ;
 
-fim
+FIM
 ```

@@ -18,6 +18,7 @@
 "QUANDO"            { return QUANDO; }
 "SENAO"             { return SENAO; }
 "ENQUANTO"          { return ENQUANTO; }
+"FACA"              { return FACA; }
 
 "OU"                { return OU; }
 "E"                 { return E; }
@@ -48,6 +49,7 @@
 "("                 { return ABREPAR; }
 ")"                 { return FECHAPAR; }
 ";"                 { return PONTOVIRG; }
+":"                 { return DOISPONTOS; }
 
 [ \t\r\n]+          { /* Ignorar espaços, tabulações e quebras de linha */ }
 

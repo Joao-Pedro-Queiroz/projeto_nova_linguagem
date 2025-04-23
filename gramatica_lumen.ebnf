@@ -4,8 +4,8 @@ Instrucao          = ";"
                    | identificador "RECEBE" ExpressaoOu ";"
                    | "EXIBIR" "(" ExpressaoOu ")" ";"
                    | "GUARDAR" identificador "COMO" tipo [ "COM" ExpressaoOu ] ";"
-                   | "QUANDO" "(" ExpressaoOu ")" BlocoPrincipal [ "SENAO" BlocoPrincipal ]
-                   | "ENQUANTO" "(" ExpressaoOu ")" BlocoPrincipal ;
+                   | "QUANDO" "(" ExpressaoOu ")" "FACA" ":" BlocoPrincipal [ "SENAO" "FACA" ":" BlocoPrincipal ]
+                   | "ENQUANTO" "(" ExpressaoOu ")" "FACA" ":" BlocoPrincipal ;
 
 ExpressaoOu        = ExpressaoE { "OU" ExpressaoE } ;
 

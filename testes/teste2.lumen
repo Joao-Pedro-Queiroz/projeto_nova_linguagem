@@ -7,16 +7,16 @@ INICIO
 
     EXIBIR("Verificando idade...") ;
 
-    QUANDO (IDADE IGUAL 18) 
+    QUANDO (IDADE IGUAL 18) FACA :
     INICIO
         EXIBIR("Maior de idade.") ;
     FIM
-    SENAO 
+    SENAO FACA :
     INICIO
         EXIBIR("Menor de idade.") ;
     FIM
 
-    ENQUANTO (IDADE MENOR 18)
+    ENQUANTO (IDADE MENOR 18) FACA :
     INICIO
         IDADE RECEBE IDADE MAIS 1 ;
         EXIBIR(IDADE) ;

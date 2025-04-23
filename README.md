@@ -35,15 +35,16 @@ Além disso, todos os comandos e palavras-chave da LumenScript são escritos em 
 | `EXIBIR(...)`       | Exibe informação na tela. Equivalente ao `print(...)`.                      |
 | `PERGUNTAR(...)`    | Solicita entrada do usuário. Equivalente ao `reader()` ou `input()`.        |
 | `GUARDAR`           | Declara uma variável.                                                       |
-| `COMO`                | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
-| `COM`               | Opcional: atribui valor inicial à variável.
-| `RECEBE`                 | Atribui valor à variável.                                  |
+| `COMO`              | Define o tipo da variável (`numero`, `texto`, `verdadeiro`).                |
+| `COM`               | Opcional: atribui valor inicial à variável.                                 |
+| `RECEBE`            | Atribui valor à variável.                                                   |
 | `QUANDO (...)`      | Condicional (if).                                                           |
 | `SENAO`             | Bloco alternativo ao condicional.                                           |
 | `ENQUANTO (...)`    | Laço de repetição.                                                          |
-| `IGUAL`, `MAIOR`, `MENOR` | Operadores relacionais (`==`, `>`, `<`).                            |
+| `FACA :`            | Indica inicío de blocos de repetição e condicionais.                        |
+| `IGUAL`, `MAIOR`, `MENOR` | Operadores relacionais (`==`, `>`, `<`).                              |
 | `OU`, `E`           | Operadores lógicos (`||`, `&&`).                                            |
-| `MAIS`, `MENOS`, `CONCATENA` | Operadores aritméticos (`+`, `-`, `++`).                              |
+| `MAIS`, `MENOS`, `CONCATENA` | Operadores aritméticos (`+`, `-`, `++`).                           |
 | `VEZES`, `DIVIDIDO` | Multiplicação e divisão (`*`, `/`).                                         |
 | `NAO`               | Negação lógica (`!`).                                                       |
 | `;`                 | Final da instrução.                                                         |
@@ -229,16 +230,16 @@ INICIO
 
     EXIBIR("Verificando idade...") ;
 
-    QUANDO (IDADE MAIOR 18) 
+    QUANDO (IDADE MAIOR 18) FACA :
     INICIO
         EXIBIR("Maior de idade.") ;
     FIM
-    SENAO 
+    SENAO FACA :
     INICIO
         EXIBIR("Menor de idade.") ;
     FIM
 
-    ENQUANTO (IDADE MENOR 18)
+    ENQUANTO (IDADE MENOR 18) FACA :
     INICIO
         IDADE RECEBE IDADE MAIS 1 ;
         EXIBIR(IDADE) ;

@@ -505,7 +505,7 @@ class NoOp(Node):
 class PrePro:
     @staticmethod
     def filter(code: str):
-        return re.sub(r'//.*', '', code).strip()
+        return re.sub(r'INFORME:.*', '', code).strip()
 
 
 class Token:
@@ -594,45 +594,45 @@ class Parser:
     def parseFactor(self):
         token = self.tokenizer.next
 
-        if token.type == "INTEGER":
+        if token.type == "NUMERO":
             self.tokenizer.selectNext()
             return IntVal(token.value)
-        elif token.type == "IDENTIFIER":
+        elif token.type == "IDENTIFICADOR":
             self.tokenizer.selectNext()
             return Identifier(token.value)
-        elif token.type == "STRING":
+        elif token.type == "TEXTO":
             self.tokenizer.selectNext()
             return StrVal(token.value)
         elif token.type == "BOOL":
             self.tokenizer.selectNext()
             return BoolVal(token.value)
-        elif token.type == "PLUS":
+        elif token.type == "MAIS":
             self.tokenizer.selectNext()
-            return UnOp("+", self.parseFactor())
-        elif token.type == "MINUS":
+            return UnOp("MAIS", self.parseFactor())
+        elif token.type == "MENOS":
             self.tokenizer.selectNext()
-            return UnOp("-", self.parseFactor())
-        elif token.type == "NOT":
+            return UnOp("MENOS", self.parseFactor())
+        elif token.type == "NAO":
             self.tokenizer.selectNext()
-            return UnOp("!", self.parseFactor())
-        elif token.type == "LPAREN":
+            return UnOp("NAO", self.parseFactor())
+        elif token.type == "ABREPAR":
             self.tokenizer.selectNext()
             result = self.parseOrExpression()
 
-            if self.tokenizer.next.type != "RPAREN":
+            if self.tokenizer.next.type != "FECHAPAR":
                 raise ValueError("Parênteses desbalanceados")
             
             self.tokenizer.selectNext()
             return result
-        elif self.tokenizer.next.type == "READ":
+        elif self.tokenizer.next.type == "PERGUNTAR":
             self.tokenizer.selectNext()
             
-            if self.tokenizer.next.type != "LPAREN":
+            if self.tokenizer.next.type != "ABREPAR":
                 raise ValueError("Parênteses esperados após 'reader'")
             
             self.tokenizer.selectNext()
             
-            if self.tokenizer.next.type != "RPAREN":
+            if self.tokenizer.next.type != "FECHAPAR":
                 raise ValueError("Parênteses de fechamento esperados após 'reader()'")
             
             self.tokenizer.selectNext()
@@ -644,16 +644,16 @@ class Parser:
     def parseTerm(self):
         left = self.parseFactor()
 
-        while self.tokenizer.next.type in ("MULT", "DIV"):
+        while self.tokenizer.next.type in ("VEZES", "DIVIDIDO"):
             operador = self.tokenizer.next.type
             self.tokenizer.selectNext()
 
             right = self.parseFactor()
 
-            if operador == "MULT":
-                left = BinOp("*", left, right)
-            elif operador == "DIV":
-                left = BinOp("/", left, right)
+            if operador == "VEZES":
+                left = BinOp("VEZES", left, right)
+            elif operador == "DIVIDIDO":
+                left = BinOp("DIVIDIDO", left, right)
 
         return left  
 
@@ -661,18 +661,18 @@ class Parser:
     def parseExpression(self):
         left = self.parseTerm()
 
-        while self.tokenizer.next.type in ("PLUS", "MINUS", "CONCAT"):
+        while self.tokenizer.next.type in ("MAIS", "MENOS", "CONCATENA"):
             operador = self.tokenizer.next.type
             self.tokenizer.selectNext()
 
             right = self.parseTerm()
 
-            if operador == "PLUS":
-                left = BinOp("+", left, right)
-            elif operador == "MINUS":
-                left = BinOp("-", left, right)
-            elif operador == "CONCAT":
-                left = BinOp("++", left, right)
+            if operador == "MAIS":
+                left = BinOp("MAIS", left, right)
+            elif operador == "MENOS":
+                left = BinOp("MENOS", left, right)
+            elif operador == "CONCATENA":
+                left = BinOp("CONCATENA", left, right)
 
         return left
     
@@ -680,18 +680,18 @@ class Parser:
     def parseRelationalExpression(self):
         left = self.parseExpression()
 
-        while self.tokenizer.next.type in ("EQUAL", "GREATER", "LESS"):
+        while self.tokenizer.next.type in ("IGUAL", "MAIOR", "MENOR"):
             operador = self.tokenizer.next.type
             self.tokenizer.selectNext()
 
             right = self.parseExpression()
 
-            if operador == "EQUAL":
-                left = BinOp("==", left, right)
-            elif operador == "GREATER":
-                left = BinOp(">", left, right)
-            elif operador == "LESS":
-                left = BinOp("<", left, right)
+            if operador == "IGUAL":
+                left = BinOp("IGUAL", left, right)
+            elif operador == "MAIOR":
+                left = BinOp("MENOR", left, right)
+            elif operador == "MENOR":
+                left = BinOp("MENOR", left, right)
 
         return left
     
@@ -699,12 +699,12 @@ class Parser:
     def parseAndExpression(self):
         left = self.parseRelationalExpression()
 
-        while self.tokenizer.next.type == "AND":
+        while self.tokenizer.next.type == "E":
             self.tokenizer.selectNext()
 
             right = self.parseRelationalExpression()
 
-            left = BinOp("&&", left, right)
+            left = BinOp("E", left, right)
 
         return left
     
@@ -712,91 +712,91 @@ class Parser:
     def parseOrExpression(self):
         left = self.parseAndExpression()
 
-        while self.tokenizer.next.type == "OR":
+        while self.tokenizer.next.type == "OU":
             self.tokenizer.selectNext()
             right = self.parseAndExpression()
 
-            left = BinOp("||", left, right)
+            left = BinOp("OU", left, right)
 
         return left      
     
 
     def parseStatement(self):
-        if self.tokenizer.next.type == "SEMI":
+        if self.tokenizer.next.type == "PONTOVIRG":
             self.tokenizer.selectNext() 
             return NoOp()
     
-        if self.tokenizer.next.type == "IDENTIFIER":
+        if self.tokenizer.next.type == "IDENTIFICADOR":
             identifier = Identifier(self.tokenizer.next.value)
             self.tokenizer.selectNext()
 
-            if self.tokenizer.next.type == "ASSIGN":
+            if self.tokenizer.next.type == "RECEBE":
                 self.tokenizer.selectNext()
                 expr = self.parseOrExpression()
 
-                if self.tokenizer.next.type != "SEMI":
+                if self.tokenizer.next.type != "PONTOVIRG":
                     raise ValueError("Ponto e vírgula esperado")
                 
                 self.tokenizer.selectNext()
                 return Assignment(identifier, expr)
-        elif self.tokenizer.next.type == "PRINT":
+        elif self.tokenizer.next.type == "EXIBIR":
             self.tokenizer.selectNext()
             
-            if self.tokenizer.next.type != "LPAREN":
+            if self.tokenizer.next.type != "ABREPAR":
                 raise ValueError("Parênteses esperados após 'print'")
             
             self.tokenizer.selectNext()
             expr = self.parseOrExpression()
             
-            if self.tokenizer.next.type != "RPAREN":
+            if self.tokenizer.next.type != "FECHAPAR":
                 raise ValueError("Parênteses fechando esperados após condição de 'print'")
             
             self.tokenizer.selectNext()
 
-            if self.tokenizer.next.type != "SEMI":
+            if self.tokenizer.next.type != "PONTOVIRG":
                 raise ValueError("Ponto e vírgula esperado")
 
             self.tokenizer.selectNext()
             return Print(expr)
-        elif self.tokenizer.next.type == "VAR":
+        elif self.tokenizer.next.type == "GUARDAR":
             self.tokenizer.selectNext()
 
-            if self.tokenizer.next.type != "IDENTIFIER":
+            if self.tokenizer.next.type != "IDENTIFICADOR":
                 raise ValueError("Identificador esperado após 'var'")
             
             identifier = Identifier(self.tokenizer.next.value)
             self.tokenizer.selectNext()
 
-            if self.tokenizer.next.type != "COLON":
+            if self.tokenizer.next.type != "COMO":
                 raise ValueError("Dois pontos esperados após identificador")
             
             self.tokenizer.selectNext()
             var_type = self.tokenizer.next.value
 
-            if var_type not in {"i32", "bool", "str"}:
+            if var_type not in {"NUMERO", "BOOLEANO", "TEXTO"}:
                 raise ValueError(f"Tipo inválido: {var_type}. Esperado 'i32', 'bool' ou 'str'")
             
             self.tokenizer.selectNext()
             expression = None
 
-            if self.tokenizer.next.type == "ASSIGN":
+            if self.tokenizer.next.type == "COM":
                 self.tokenizer.selectNext()
                 expression = self.parseOrExpression()
 
-            if self.tokenizer.next.type != "SEMI":
+            if self.tokenizer.next.type != "PONTOVIRG":
                 raise ValueError("Ponto e vírgula esperado")
             
             return VarDeC(identifier, var_type, expression)
-        elif self.tokenizer.next.type == "IF":
+        elif self.tokenizer.next.type == "QUANDO":
             self.tokenizer.selectNext()
             
-            if self.tokenizer.next.type != "LPAREN":
+            if self.tokenizer.next.type != "ABREPAR":
                 raise ValueError("Parênteses esperados após 'if'")
             
             self.tokenizer.selectNext()
             condition = self.parseOrExpression()
             
-            if self.tokenizer.next.type != "RPAREN":
+            if self.tokenizer.next.type != "FECHAPAR":
                 raise ValueError("Parênteses fechando esperados após condição de 'if'")
             
             self.tokenizer.selectNext()
@@ -804,21 +804,21 @@ class Parser:
     
             else_branch = None
             
-            if self.tokenizer.next.type == "ELSE":
+            if self.tokenizer.next.type == "SENAO":
                 self.tokenizer.selectNext()
                 else_branch = self.parseBlock()
             
             return If(condition, then_branch, else_branch)
-        elif self.tokenizer.next.type == "WHILE":
+        elif self.tokenizer.next.type == "ENQUANTO":
             self.tokenizer.selectNext()
             
-            if self.tokenizer.next.type != "LPAREN":
+            if self.tokenizer.next.type != "ABREPAR":
                 raise ValueError("Parênteses esperados após 'while'")
             
             self.tokenizer.selectNext()
             condition = self.parseOrExpression()
             
-            if self.tokenizer.next.type != "RPAREN":
+            if self.tokenizer.next.type != "FECHAPAR":
                 raise ValueError("Parênteses fechando esperados após condição de 'while'")
             
             self.tokenizer.selectNext()
@@ -834,10 +834,10 @@ class Parser:
     def parseBlock(self):
         statements = []
 
-        if self.tokenizer.next.type == "LBRACE":
+        if self.tokenizer.next.type == "INICIO":
             self.tokenizer.selectNext()
 
-            while self.tokenizer.next.type != "RBRACE":
+            while self.tokenizer.next.type != "FIM":
                 if self.tokenizer.next.type == "EOF":
                      raise ValueError("Erro de sintaxe: bloco não fechado corretamente")
 
@@ -860,7 +860,8 @@ class Parser:
         if tokenizer.next.type != "EOF":
             raise ValueError("Erro: expressão não consumiu todos os tokens. Verifique a sintaxe.")
         
-        return root
+        symbol_table = SymbolTable()
+        root.Evaluate(symbol_table)
 
     @staticmethod
     def geracodigo(code, filename):
@@ -886,11 +887,11 @@ if __name__ == "__main__":
 
     arquivo = sys.argv[1]
 
-    if not arquivo.endswith('.zig'):
+    if not arquivo.endswith('.lumen'):
         raise ValueError("O arquivo deve ter a extensão '.zig'.")
 
     with open(arquivo, 'r') as file:
         expressao = file.read()
 
     expressao = PrePro.filter(expressao)
-    Parser.geracodigo(expressao, arquivo)
+    Parser.run(expressao, arquivo)

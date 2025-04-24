@@ -545,7 +545,7 @@ class Tokenizer:
                 if self.position < len(self.source) and self.source[self.position].isalpha():
                     raise ValueError(f"Erro de sintaxe: número seguido de letra sem separação: {num}{self.source[self.position]}")
 
-                self.next = Token("INTEGER", int(num))
+                self.next = Token("NUMERO", int(num))
                 return
             elif char.isalpha():
                 ident = ''
@@ -554,7 +554,7 @@ class Tokenizer:
                     ident += self.source[self.position]
                     self.position += 1
 
-                token_type = self.keywords.get(ident, "IDENTIFIER")
+                token_type = self.keywords.get(ident, "IDENTIFICADOR")
                 
                 self.next = Token(token_type, ident)
                 return
@@ -570,7 +570,7 @@ class Tokenizer:
                     raise ValueError("String não fechada corretamente com aspas.")
 
                 self.position += 1
-                self.next = Token("STRING", string_val)
+                self.next = Token("TEXTO", string_val)
                 return
             elif char == '(': 
                 self.next = Token("ABREPAR", char)

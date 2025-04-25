@@ -27,4 +27,6 @@ INICIO
 
     EXIBIR("Olá, " CONCATENA NOME) ;
     
+    FALAR("Olá, eu sou Queiroz") ;
+
 FIM

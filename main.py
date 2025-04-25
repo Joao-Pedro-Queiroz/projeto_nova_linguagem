@@ -118,51 +118,51 @@ class BinOp(Node):
         left_value, left_type = self.children[0].Evaluate(symbol_table)
         right_value, right_type = self.children[1].Evaluate(symbol_table)
 
-        if self.value in {"+", "-", "*", "/"}:
-            if left_type != "i32" or right_type != "i32":
+        if self.value in {"MAIS", "MENOS", "VEZES", "DIVIDIDO"}:
+            if left_type != "NUMERO" or right_type != "NUMERO":
                 raise TypeError(f"Operação aritmética requer operandos 'i32', mas recebeu '{left_type}' e '{right_type}'")
             
-            if self.value == "+":
-                return (left_value + right_value, "i32")
-            elif self.value == "-":
-                return (left_value - right_value, "i32")
-            elif self.value == "*":
-                return (left_value * right_value, "i32")
-            elif self.value == "/":
+            if self.value == "MAIS":
+                return (left_value + right_value, "NUMERO")
+            elif self.value == "MENOS":
+                return (left_value - right_value, "NUMERO")
+            elif self.value == "VEZES":
+                return (left_value * right_value, "NUMERO")
+            elif self.value == "DIVIDIDO":
                 if right_value == 0:
                     raise ZeroDivisionError("Erro: divisão por zero.")
                 
-                return (left_value // right_value, "i32")
+                return (left_value // right_value, "NUMERO")
         
-        elif self.value in {"&&", "||"}:
-            if left_type != "bool" or right_type != "bool":
+        elif self.value in {"E", "OU"}:
+            if left_type != "BOOLEANO" or right_type != "BOOLEANO":
                 raise TypeError(f"Operação lógica requer operandos 'bool', mas recebeu '{left_type}' e '{right_type}'")
             
-            if self.value == "&&":
-                return (1 if left_value and right_value else 0, "bool")
-            elif self.value == "||":
-                return (1 if left_value or right_value else 0, "bool")
+            if self.value == "E":
+                return (1 if left_value and right_value else 0, "BOOLEANO")
+            elif self.value == "OU":
+                return (1 if left_value or right_value else 0, "BOOLEANO")
         
-        elif self.value in {"==", ">", "<"}:
+        elif self.value in {"IGUAL", "MAIOR", "MENOR"}:
             if left_type != right_type:
                 raise TypeError(f"Comparação requer operandos do mesmo tipo, mas recebeu '{left_type}' e '{right_type}'")
             
-            if self.value == "==":
-                return (1 if left_value == right_value else 0, "bool")
-            elif self.value == ">":
-                return (1 if left_value > right_value else 0, "bool")
-            elif self.value == "<":
-                return (1 if left_value < right_value else 0, "bool")
+            if self.value == "IGUAL":
+                return (1 if left_value == right_value else 0, "BOOLEANO")
+            elif self.value == "MAIOR":
+                return (1 if left_value > right_value else 0, "BOOLEANO")
+            elif self.value == "MENOR":
+                return (1 if left_value < right_value else 0, "BOOLEANO")
         
-        elif self.value == "++":
-            if left_type == "bool" and right_type == "bool":
-                return (str("true" if left_value else "false") + str("true" if right_value else "false"), "str")
-            elif left_type == "bool" and right_type != "bool":
-                return (str("true" if left_value else "false") + str(right_value), "str")
-            elif right_type == "bool" and left_type != "bool":
-                return (str(left_value) + str("true" if right_value else "false"), "str")
+        elif self.value == "CONCATENA":
+            if left_type == "BOOLEANO" and right_type == "BOOLEANO":
+                return (str("true" if left_value else "false") + str("true" if right_value else "false"), "TEXTO")
+            elif left_type == "BOOLEANO" and right_type != "BOOLEANO":
+                return (str("true" if left_value else "false") + str(right_value), "TEXTO")
+            elif right_type == "BOOLEANO" and left_type != "BOOLEANO":
+                return (str(left_value) + str("true" if right_value else "false"), "TEXTO")
             else:
-                return (str(left_value) + str(right_value), "str")
+                return (str(left_value) + str(right_value), "TEXTO")
 
         else:
             raise ValueError(f"Operador binário desconhecido: {self.value}")
@@ -228,17 +228,17 @@ class UnOp(Node):
     def Evaluate(self, symbol_table):
         value, val_type = self.children[0].Evaluate(symbol_table)
 
-        if self.value in {"+", "-"}:
-            if val_type != "i32":
+        if self.value in {"MAIS", "MENOS"}:
+            if val_type != "NUMERO":
                 raise TypeError(f"Operador unário '{self.value}' requer tipo 'i32', mas recebeu '{val_type}'")
             
-            return ((+value if self.value == "+" else -value), "i32")
+            return ((+value if self.value == "MAIS" else -value), "NUMERO")
 
-        elif self.value == "!":
-            if val_type != "bool":
+        elif self.value == "NAO":
+            if val_type != "BOOLEANO":
                 raise TypeError(f"Operador unário '!' requer tipo 'bool', mas recebeu '{val_type}'")
             
-            return (1 if not value else 0, "bool")
+            return (1 if not value else 0, "BOOLEANO")
         
         else:
             raise ValueError(f"Operador unário desconhecido: {self.value}")
@@ -264,7 +264,7 @@ class IntVal(Node):
 
 
     def Evaluate(self, symbol_table):
-         return (self.value, "i32")
+         return (self.value, "NUMERO")
     
     def Generate(self, symbol_table):
         return ["mov eax, " + str(self.value)]
@@ -275,7 +275,7 @@ class BoolVal(Node):
         super().__init__(value, [])
 
     def Evaluate(self, symbol_table):
-        return (1 if self.value == "true" else 0, "bool")
+        return (1 if self.value == "true" else 0, "BOOLEANO")
     
     def Generate(self, symbol_table):
         val = "1" if self.value == "true" else "0"
@@ -287,7 +287,7 @@ class StrVal(Node):
         super().__init__(value, [])
 
     def Evaluate(self, symbol_table):
-        return (self.value, "str")
+        return (self.value, "TEXTO")
     
     def Generate(self, symbol_table):
         raise NotImplementedError("Strings ainda não são suportadas em código Assembly.")
@@ -308,7 +308,7 @@ class Identifier(Node):
 
 class VarDeC(Node):
     def __init__(self, identifier, type, expression=None):
-        super().__init__("=", [identifier, type] + ([expression] if expression else []))
+        super().__init__("GUARDAR", [identifier, type] + ([expression] if expression else []))
 
 
     def Evaluate(self, symbol_table):
@@ -341,7 +341,7 @@ class VarDeC(Node):
 
 class Assignment(Node):
     def __init__(self, identifier, expression):
-        super().__init__("=", [identifier, expression])
+        super().__init__("RECEBE", [identifier, expression])
 
 
     def Evaluate(self, symbol_table):
@@ -358,12 +358,12 @@ class Assignment(Node):
 
 class Print(Node):
     def __init__(self, expression):
-        super().__init__("print", [expression])
+        super().__init__("EXIBIR", [expression])
 
 
     def Evaluate(self, symbol_table):
         value = self.children[0].Evaluate(symbol_table)
-        if value[1] == "bool":
+        if value[1] == "BOOLEANO":
             print("true" if value[0] else "false")
         else:
             print(value[0])
@@ -380,13 +380,13 @@ class Print(Node):
     
 class If(Node):
     def __init__(self, condition, then_branch, else_branch=None):
-        super().__init__("if", [condition, then_branch] + ([else_branch] if else_branch else []))
+        super().__init__("QUANDO", [condition, then_branch] + ([else_branch] if else_branch else []))
 
     def Evaluate(self, symbol_table):
         condition_value, condition_type = self.children[0].Evaluate(symbol_table)
         
-        if condition_type != "bool":
-            raise TypeError(f"Condição do 'if' deve ser do tipo 'bool', mas recebeu '{condition_type}'")
+        if condition_type != "BOOLEANO":
+            raise TypeError(f"Condição do 'QUANDO' deve ser do tipo 'BOOLEANO', mas recebeu '{condition_type}'")
         
         if condition_value:
             return self.children[1].Evaluate(symbol_table)
@@ -418,13 +418,13 @@ class If(Node):
 
 class While(Node):
     def __init__(self, condition, block):
-        super().__init__("while", [condition, block])
+        super().__init__("ENQUANTO", [condition, block])
 
     def Evaluate(self, symbol_table):
         condition_value, condition_type = self.children[0].Evaluate(symbol_table)
 
         if condition_type != "bool":
-            raise TypeError(f"Condição do 'while' deve ser do tipo 'bool', mas recebeu '{condition_type}'")
+            raise TypeError(f"Condição do 'ENQUANTO' deve ser do tipo 'BOOLEANO', mas recebeu '{condition_type}'")
         
         result = None
 
@@ -470,13 +470,13 @@ class Block(Node):
 
 class Read(Node):
     def __init__(self):
-        super().__init__("read", [])
+        super().__init__("PERGUNTAR", [])
 
     def Evaluate(self, symbol_table):
         value = input()
 
         try:
-            return (int(value), "i32")
+            return (int(value), "NUMERO")
         except ValueError:
             raise ValueError(f"Entrada inválida: {value}. Esperado um número inteiro.")
         

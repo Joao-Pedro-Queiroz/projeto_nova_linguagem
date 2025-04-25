@@ -25,9 +25,6 @@ INICIO
     EXIBIR("Qual seu nome?") ;
     NOME RECEBE PERGUNTAR() ;
 
-    EXIBIR("Olá,") ;
-    EXIBIR(NOME) ;
-
-    FALAR("Olá, eu sou Pedro") ;
+    EXIBIR("Olá, " CONCATENA NOME) ;
     
 FIM

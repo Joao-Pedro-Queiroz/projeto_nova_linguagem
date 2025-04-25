@@ -423,7 +423,7 @@ class While(Node):
     def Evaluate(self, symbol_table):
         condition_value, condition_type = self.children[0].Evaluate(symbol_table)
 
-        if condition_type != "bool":
+        if condition_type != "BOOLEANO":
             raise TypeError(f"Condição do 'ENQUANTO' deve ser do tipo 'BOOLEANO', mas recebeu '{condition_type}'")
         
         result = None
@@ -476,7 +476,10 @@ class Read(Node):
         value = input()
 
         try:
-            return (int(value), "NUMERO")
+            if value.isdigit():
+                return (int(value), "NUMERO")
+            else:
+                return (value, "TEXTO")
         except ValueError:
             raise ValueError(f"Entrada inválida: {value}. Esperado um número inteiro.")
         
@@ -521,7 +524,7 @@ class Tokenizer:
         self.next = next
         self.keywords = {
             "INICIO": "INICIO", "FIM": "FIM", "RECEBE": "RECEBE", "EXIBIR": "EXIBIR", "FALAR": "FALAR", 
-            "GUARDAR": "GUARDAR","COMO": "COMO", "COM": "COM", "QUANDO": "qUANDO", "SENAO": "SENAO",
+            "GUARDAR": "GUARDAR","COMO": "COMO", "COM": "COM", "QUANDO": "QUANDO", "SENAO": "SENAO",
             "ENQUANTO": "ENQUANTO", "OU": "OU", "E": "E", "IGUAL": "IGUAL", "MAIOR": "MAIOR", "MENOR": "MENOR",
             "MAIS": "MAIS", "MENOS": "MENOS", "CONCATENA": "CONCATENA", "VEZES": "VEZES", "DIVIDIDO": "DIVIDIDO",
             "NAO": "NAO", "PERGUNTAR": "PERGUNTAR", "VERDADEIRO": "BOOL", "FALSO": "BOOL", "NUMERO": "TYPE_NUMERO",
@@ -894,4 +897,4 @@ if __name__ == "__main__":
         expressao = file.read()
 
     expressao = PrePro.filter(expressao)
-    Parser.run(expressao, arquivo)
+    Parser.run(expressao)

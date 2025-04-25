@@ -2,6 +2,7 @@ import sys
 import re
 from abc import ABC, abstractmethod
 import os
+import pyttsx3
 
 
 class Code:
@@ -376,6 +377,27 @@ class Print(Node):
         code.append("call printf")
         code.append("add esp, 8")
         return code
+
+
+class Falar(Node):
+    def __init__(self, expression):
+        super().__init__("FALAR", [expression])
+        self.engine = pyttsx3.init()
+        self.engine.setProperty("volume", 0.7)
+
+    def Evaluate(self, symbol_table):
+        value = self.children[0].Evaluate(symbol_table)
+
+        if isinstance(value, tuple):
+            value = value[0]
+
+        self.engine.say(str(value))
+        self.engine.runAndWait()
+        
+        return (value, None)
+
+    def Generate(self, symbol_table):
+        return []
     
     
 class If(Node):
@@ -761,6 +783,25 @@ class Parser:
 
             self.tokenizer.selectNext()
             return Print(expr)
+        elif self.tokenizer.next.type == "FALAR":
+            self.tokenizer.selectNext()
+            
+            if self.tokenizer.next.type != "ABREPAR":
+                raise ValueError("Parênteses esperados após 'print'")
+            
+            self.tokenizer.selectNext()
+            expr = self.parseOrExpression()
+            
+            if self.tokenizer.next.type != "FECHAPAR":
+                raise ValueError("Parênteses fechando esperados após condição de 'print'")
+            
+            self.tokenizer.selectNext()
+
+            if self.tokenizer.next.type != "PONTOVIRG":
+                raise ValueError("Ponto e vírgula esperado")
+
+            self.tokenizer.selectNext()
+            return Falar(expr)
         elif self.tokenizer.next.type == "GUARDAR":
             self.tokenizer.selectNext()
 

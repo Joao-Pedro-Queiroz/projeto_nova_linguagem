@@ -258,7 +258,6 @@ class UnOp(Node):
         return code
 
 
-
 class IntVal(Node):
     def __init__(self, value):
         super().__init__(value, [])
@@ -268,7 +267,9 @@ class IntVal(Node):
          return (self.value, "NUMERO")
     
     def Generate(self, symbol_table):
-        return [f"%{self.id} = add i32 0, {self.value}"]
+        temp_var = f"temp_{self.id}"
+        code = [f"%{temp_var} = add i32 0, {self.value}"]
+        return code
     
 
 class BoolVal(Node):
@@ -279,8 +280,10 @@ class BoolVal(Node):
         return (1 if self.value == "true" else 0, "BOOLEANO")
     
     def Generate(self, symbol_table):
-        val = "1" if self.value == "true" else "0"
-        return [f"mov eax, {val}"]
+        temp_var = f"temp_{self.id}"
+        val = "1" if self.value == "VERDADEIRO" else "0"
+        code = [f"%{temp_var} = icmp eq i32 0, {val}"]
+        return code
 
 
 class StrVal(Node):

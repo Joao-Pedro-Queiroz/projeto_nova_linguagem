@@ -294,7 +294,11 @@ class StrVal(Node):
         return (self.value, "TEXTO")
     
     def Generate(self, symbol_table):
-        raise NotImplementedError("Strings ainda não são suportadas em código Assembly.")
+        temp_var = f"temp_{self.id}"
+        string_constant = f"c\"{self.value}\\00\""
+        code = [f"@{self.id} = private constant [{len(self.value) + 1} x i8] {string_constant}"]
+        code.append(f"%{temp_var} = getelementptr inbounds [{len(self.value) + 1} x i8], [{len(self.value) + 1} x i8]* @{self.id}, i32 0, i32 0")
+        return code
 
 
 class Identifier(Node):

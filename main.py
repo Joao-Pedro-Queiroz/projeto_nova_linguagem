@@ -268,7 +268,7 @@ class IntVal(Node):
          return (self.value, "NUMERO")
     
     def Generate(self, symbol_table):
-        return ["mov eax, " + str(self.value)]
+        return [f"%{self.id} = add i32 0, {self.value}"]
     
 
 class BoolVal(Node):

@@ -310,8 +310,12 @@ class Identifier(Node):
         return symbol_table.get(self.value)
     
     def Generate(self, symbol_table):
-        offset = symbol_table.get_offset(self.value)
-        return [f"mov eax, [ebp-{offset}]"]
+        if symbol_table.get(self.value)[1] == "NUMERO" or symbol_table.get(self.value)[1] == "BOOLEANO":
+            return [f"%{self.id} = load i32, i32* @{self.value}"]
+        elif symbol_table.get(self.value)[1] == "TEXTO":
+            return [f"%{self.id} = load i8*, i8** @{self.value}"]
+        else:
+            raise ValueError(f"Tipo de variável desconhecido para {self.value}")
     
 
 class VarDeC(Node):

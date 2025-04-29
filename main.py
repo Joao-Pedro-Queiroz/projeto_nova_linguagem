@@ -49,6 +49,7 @@ class SymbolTable:
         self.table = {}
         self.tableoffset = {}
         self.offset = 0
+        self.expecting_type = None
 
     def allocate(self, name, var_type):
         self.offset += 4
@@ -363,8 +364,10 @@ class VarDeC(Node):
 
         # Se há expressão de inicialização
         if len(self.children) == 3:
+            symbol_table.expecting_type = type_
             expr_code = self.children[2].Generate(symbol_table)
             code += expr_code
+            symbol_table.expecting_type = None
 
             expr_result = f"%temp_{self.children[2].id}" if not isinstance(self.children[2], Identifier) else f"%{self.children[2].id}"
 
@@ -389,15 +392,18 @@ class Assignment(Node):
     def Generate(self, symbol_table):
         code = []
 
+        var_name = self.children[0].value
+        var_type = symbol_table.get(var_name)[1]
+        symbol_table.expecting_type = var_type
+
         # Gera o valor da expressão do lado direito
         expr_code = self.children[1].Generate(symbol_table)
         code += expr_code
 
+        symbol_table.expecting_type = None
+
         # Resultado gerado (LLVM IR variable)
         expr_result = f"%temp_{self.children[1].id}" if not isinstance(self.children[1], Identifier) else f"%{self.children[1].id}"
-
-        var_name = self.children[0].value
-        var_type = symbol_table.get(var_name)[1]
 
         # Store adequado ao tipo
         if var_type == "NUMERO" or var_type == "BOOLEANO":
@@ -579,13 +585,30 @@ class Read(Node):
             raise ValueError(f"Entrada inválida: {value}. Esperado um número inteiro.")
         
     def Generate(self, symbol_table):
-        return [
-            "push scan_int",
-            "push format_in",
-            "call scanf",
-            "add esp, 8",
-            "mov eax, [scan_int]"
-        ]
+        code = []
+        temp_var = f"%temp_{self.id}"
+
+        # Buffer para leitura de string (estático, tamanho fixo para simplificação)
+        buffer_name = f"%buf_{self.id}"
+        str_format = "@.str_read_fmt"   # definido no cabeçalho como: `@.str_read_fmt = private constant [3 x i8] c\"%s\\00\"`
+        int_format = "@.int_read_fmt"   # definido no cabeçalho como: `@.int_read_fmt = private constant [3 x i8] c\"%d\\00\"`
+
+        # Tentativa de inferência de tipo, como no Evaluate (assumiremos sempre texto se for usado de forma independente)
+        read_type = symbol_table.expecting_type if hasattr(symbol_table, "expecting_type") else "TEXTO"
+
+        if read_type == "NUMERO":
+            code.append(f"{temp_var}_ptr = alloca i32")
+            code.append(f"%call_scanf_{self.id} = call i32 (i8*, ...) @scanf(i8* {int_format}, i32* {temp_var}_ptr)")
+            code.append(f"{temp_var} = load i32, i32* {temp_var}_ptr")
+        elif read_type == "TEXTO":
+            code.append(f"{buffer_name} = alloca [256 x i8]")
+            code.append(f"%gep_{self.id} = getelementptr inbounds [256 x i8], [256 x i8]* {buffer_name}, i32 0, i32 0")
+            code.append(f"%call_scanf_{self.id} = call i32 (i8*, ...) @scanf(i8* {str_format}, i8* %gep_{self.id})")
+            code.append(f"{temp_var} = add i8* %gep_{self.id}, 0")  # só alias para retorno
+        else:
+            raise Exception("Tipo de leitura não suportado")
+
+        return code
 
 
 class NoOp(Node):

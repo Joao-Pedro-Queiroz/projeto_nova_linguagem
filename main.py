@@ -340,15 +340,38 @@ class VarDeC(Node):
     
     def Generate(self, symbol_table):
         identifier = self.children[0].value
-        type_ = self.children[1]
-        offset = symbol_table.allocate(identifier, type_)
+        type_ = self.children[1]  # "NUMERO", "BOOLEANO", "TEXTO"
+        code = []
 
-        code = [f"sub esp, 4 ; reserva espaço para {identifier}"]
+        llvm_type = {
+            "NUMERO": "i32",
+            "BOOLEANO": "i32",
+            "TEXTO": "i8*"
+        }.get(type_)
 
+        if llvm_type is None:
+            raise ValueError(f"Tipo de variável desconhecido: {type_}")
+
+        # Declara a variável globalmente (com valor neutro)
+        if type_ == "TEXTO":
+            code.append(f"@{identifier} = global {llvm_type} null")
+        else:
+            code.append(f"@{identifier} = global {llvm_type} 0")
+
+        # Registra no symbol_table
+        symbol_table.declare(identifier, type_)
+
+        # Se há expressão de inicialização
         if len(self.children) == 3:
             expr_code = self.children[2].Generate(symbol_table)
             code += expr_code
-            code.append(f"mov [ebp-{offset}], eax")
+
+            expr_result = f"%temp_{self.children[2].id}" if not isinstance(self.children[2], Identifier) else f"%{self.children[2].id}"
+
+            if type_ == "TEXTO":
+                code.append(f"store {llvm_type} {expr_result}, {llvm_type}* @{identifier}")
+            else:
+                code.append(f"store i32 {expr_result}, i32* @{identifier}")
 
         return code
 

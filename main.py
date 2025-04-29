@@ -495,24 +495,42 @@ class If(Node):
             return self.children[2].Evaluate(symbol_table)
         
     def Generate(self, symbol_table):
-        if_id = self.id
-        else_label = f"else_{if_id}"
-        end_label = f"endif_{if_id}"
+        code = []
 
-        code = self.children[0].Generate(symbol_table)
-        code += ["cmp eax, 0"]
+        cond_code = self.children[0].Generate(symbol_table)
+        code += cond_code
 
+        cond_result = f"%temp_{self.children[0].id}"
+        then_label = f"then_{self.id}"
+        else_label = f"else_{self.id}"
+        end_label = f"endif_{self.id}"
+
+        # Branch condicional
         if len(self.children) == 3:
-            code.append(f"je {else_label}")
-            code += self.children[1].Generate(symbol_table)
-            code.append(f"jmp {end_label}")
+            code.append(f"br i1 {cond_result}, label %{then_label}, label %{else_label}")
+
+            # THEN branch
+            code.append(f"{then_label}:")
+            then_code = self.children[1].Generate(symbol_table)
+            code += then_code
+            code.append(f"br label %{end_label}")
+
+            # ELSE branch
             code.append(f"{else_label}:")
-            code += self.children[2].Generate(symbol_table)
-            code.append(f"{end_label}:")
+            else_code = self.children[2].Generate(symbol_table)
+            code += else_code
+            code.append(f"br label %{end_label}")
         else:
-            code.append(f"je {end_label}")
-            code += self.children[1].Generate(symbol_table)
-            code.append(f"{end_label}:")
+            code.append(f"br i1 {cond_result}, label %{then_label}, label %{end_label}")
+
+            # THEN only
+            code.append(f"{then_label}:")
+            then_code = self.children[1].Generate(symbol_table)
+            code += then_code
+            code.append(f"br label %{end_label}")
+
+        # Fim
+        code.append(f"{end_label}:")
 
         return code
     

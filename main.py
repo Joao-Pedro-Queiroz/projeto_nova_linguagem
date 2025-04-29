@@ -170,53 +170,40 @@ class BinOp(Node):
         
     def Generate(self, symbol_table):
         code = []
-        code += self.children[1].Generate(symbol_table)  # right
-        code.append("push eax")
-        code += self.children[0].Generate(symbol_table)  # left
-        code.append("pop ecx")
 
-        if self.value == "+":
-            code.append("add eax, ecx")
-        elif self.value == "-":
-            code.append("sub eax, ecx")
-        elif self.value == "*":
-            code.append("imul ecx")
-        elif self.value == "/":
-            code.append("mov edx, 0")
-            code.append("idiv ecx")
-        elif self.value in ["==", "<", ">"]:
-            code.append("cmp eax, ecx")
-            code.append("mov eax, 0")
-            code.append("mov ecx, 1")
+        right_code = self.children[1].Generate(symbol_table)
+        left_code = self.children[0].Generate(symbol_table)
 
-            if self.value == "==":
-                code.append("cmove eax, ecx")
-            elif self.value == "<":
-                code.append("cmovl eax, ecx")
-            elif self.value == ">":
-                code.append("cmovg eax, ecx")
-        elif self.value == "&&":
-            code.append("test eax, eax")
-            code.append("je false_and")
-            code.append("test ecx, ecx")
-            code.append("je false_and")
-            code.append("mov eax, 1")
-            code.append("jmp end_and")
-            code.append("false_and:")
-            code.append("mov eax, 0")
-            code.append("end_and:")
-        elif self.value == "||":
-            code.append("test eax, eax")
-            code.append("jne true_or")
-            code.append("test ecx, ecx")
-            code.append("jne true_or")
-            code.append("mov eax, 0")
-            code.append("jmp end_or")
-            code.append("true_or:")
-            code.append("mov eax, 1")
-            code.append("end_or:")
+        code += right_code
+        right_result = f"%temp_{self.children[1].id}"
+        code += left_code
+        left_result = f"%temp_{self.children[0].id}"
+
+        result_var = f"%temp_{self.id}"
+
+        if self.value == "MAIS":
+            code.append(f"{result_var} = add i32 {left_result}, {right_result}")
+        elif self.value == "MENOS":
+            code.append(f"{result_var} = sub i32 {left_result}, {right_result}")
+        elif self.value == "VEZES":
+            code.append(f"{result_var} = mul i32 {left_result}, {right_result}")
+        elif self.value == "DIVIDIDO":
+            code.append(f"{result_var} = sdiv i32 {left_result}, {right_result}")
+        elif self.value == "IGUAL":
+            code.append(f"{result_var} = icmp eq i32 {left_result}, {right_result}")
+        elif self.value == "MAIOR":
+            code.append(f"{result_var} = icmp sgt i32 {left_result}, {right_result}")
+        elif self.value == "MENOR":
+            code.append(f"{result_var} = icmp slt i32 {left_result}, {right_result}")
+        elif self.value == "E":
+            code.append(f"{result_var} = and i1 {left_result}, {right_result}")
+        elif self.value == "OU":
+            code.append(f"{result_var} = or i1 {left_result}, {right_result}")
+        elif self.value == "CONCATENA":
+            # Placeholder – concatenar strings em LLVM exige funções externas ou runtime
+            code.append(f"; Concatenação de string não implementada em LLVM IR direto")
         else:
-            raise Exception("Operador binário não implementado")
+            raise Exception(f"Operador binário desconhecido: {self.value}")
 
         return code
 

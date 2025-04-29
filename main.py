@@ -240,15 +240,22 @@ class UnOp(Node):
             raise ValueError(f"Operador unário desconhecido: {self.value}")
     
     def Generate(self, symbol_table):
-        code = self.children[0].Generate(symbol_table)
+        code = []
 
-        if self.value == "-":
-            code.append("neg eax")
-        elif self.value == "!":
-            code.append("cmp eax, 0")
-            code.append("mov eax, 0")
-            code.append("mov ecx, 1")
-            code.append("cmove eax, ecx")
+        child_code = self.children[0].Generate(symbol_table)
+        code += child_code
+
+        child_result = f"%temp_{self.children[0].id}" if not isinstance(self.children[0], Identifier) else f"%{self.children[0].id}"
+        result_var = f"%temp_{self.id}"
+
+        if self.value == "NAO":
+            code.append(f"{result_var} = xor i1 {child_result}, true")
+        elif self.value == "MENOS":
+            code.append(f"{result_var} = sub i32 0, {child_result}")
+        elif self.value == "MAIS":
+            code.append(f"{result_var} = add i32 0, {child_result}")
+        else:
+            raise Exception(f"Operador unário desconhecido: {self.value}")
 
         return code
 

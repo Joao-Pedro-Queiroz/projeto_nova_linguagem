@@ -175,9 +175,10 @@ class BinOp(Node):
         left_code = self.children[0].Generate(symbol_table)
 
         code += right_code
-        right_result = f"%temp_{self.children[1].id}"
         code += left_code
-        left_result = f"%temp_{self.children[0].id}"
+
+        left_result = f"%temp_{self.children[0].id}" if not isinstance(self.children[0], Identifier) else f"%{self.children[0].id}"
+        right_result = f"%temp_{self.children[1].id}" if not isinstance(self.children[1], Identifier) else f"%{self.children[1].id}"
 
         result_var = f"%temp_{self.id}"
 
@@ -200,8 +201,15 @@ class BinOp(Node):
         elif self.value == "OU":
             code.append(f"{result_var} = or i1 {left_result}, {right_result}")
         elif self.value == "CONCATENA":
-            # Placeholder – concatenar strings em LLVM exige funções externas ou runtime
-            code.append(f"; Concatenação de string não implementada em LLVM IR direto")
+            malloc_size = 256
+            malloc_var = f"%malloc_{self.id}"
+            strcat_1 = f"%strcat1_{self.id}"
+            strcat_2 = f"%strcat2_{self.id}"
+
+            code.append(f"{malloc_var} = call i8* @malloc(i64 {malloc_size})")
+            code.append(f"{strcat_1} = call i8* @strcat(i8* {malloc_var}, i8* {left_result})")
+            code.append(f"{strcat_2} = call i8* @strcat(i8* {strcat_1}, i8* {right_result})")
+            code.append(f"{result_var} = bitcast i8* {strcat_2} to i8*")
         else:
             raise Exception(f"Operador binário desconhecido: {self.value}")
 

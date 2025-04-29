@@ -425,12 +425,32 @@ class Print(Node):
     
     def Generate(self, symbol_table):
         code = self.children[0].Generate(symbol_table)
-        code.append("push eax")
-        code.append("push format_out")
-        code.append("call printf")
-        code.append("add esp, 8")
-        return code
+        
+        child = self.children[0]
+        result_var = f"%temp_{child.id}" if not isinstance(child, Identifier) else f"%{child.id}"
 
+        # Descobrir tipo
+        if isinstance(child, Identifier):
+            val_type = symbol_table.get(child.value)[1]
+        else:
+            _, val_type = child.Evaluate(symbol_table)
+
+        if val_type == "NUMERO":
+            format_str = "@.int_fmt"
+            code.append(f"%call_{self.id} = call i32 (i8*, ...) @printf(i8* {format_str}, i32 {result_var})")
+        elif val_type == "BOOLEANO":
+            # Converte booleano (i1) em string com ponteiro condicional
+            true_str = "@.true_str"
+            false_str = "@.false_str"
+            bool_ptr = f"%bool_ptr_{self.id}"
+            code.append(f"{bool_ptr} = select i1 {result_var}, i8* {true_str}, i8* {false_str}")
+            code.append(f"%call_{self.id} = call i32 (i8*, ...) @printf(i8* %bool_ptr_{self.id})")
+        elif val_type == "TEXTO":
+            code.append(f"%call_{self.id} = call i32 (i8*, ...) @printf(i8* {result_var})")
+        else:
+            raise Exception(f"Tipo inválido em Print: {val_type}")
+        
+        return code
 
 class Falar(Node):
     def __init__(self, expression):

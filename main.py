@@ -364,9 +364,26 @@ class Assignment(Node):
         return (value, type)
     
     def Generate(self, symbol_table):
-        code = self.children[1].Generate(symbol_table)
-        offset = symbol_table.get_offset(self.children[0].value)
-        code.append(f"mov [ebp-{offset}], eax")
+        code = []
+
+        # Gera o valor da expressão do lado direito
+        expr_code = self.children[1].Generate(symbol_table)
+        code += expr_code
+
+        # Resultado gerado (LLVM IR variable)
+        expr_result = f"%temp_{self.children[1].id}" if not isinstance(self.children[1], Identifier) else f"%{self.children[1].id}"
+
+        var_name = self.children[0].value
+        var_type = symbol_table.get(var_name)[1]
+
+        # Store adequado ao tipo
+        if var_type == "NUMERO" or var_type == "BOOLEANO":
+            code.append(f"store i32 {expr_result}, i32* @{var_name}")
+        elif var_type == "TEXTO":
+            code.append(f"store i8* {expr_result}, i8** @{var_name}")
+        else:
+            raise ValueError(f"Tipo de variável desconhecido para atribuição: {var_type}")
+
         return code
 
 

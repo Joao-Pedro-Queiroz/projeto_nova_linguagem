@@ -554,16 +554,32 @@ class While(Node):
         return result
     
     def Generate(self, symbol_table):
-        loop_id = self.id
-        start_label = f"loop_{loop_id}"
-        end_label = f"exit_{loop_id}"
+        code = []
 
-        code = [f"{start_label}:"]
-        code += self.children[0].Generate(symbol_table)
-        code += ["cmp eax, 0", f"je {end_label}"]
-        code += self.children[1].Generate(symbol_table)
-        code.append(f"jmp {start_label}")
+        loop_id = self.id
+        cond_label = f"loop_cond_{loop_id}"
+        body_label = f"loop_body_{loop_id}"
+        end_label = f"loop_end_{loop_id}"
+
+        # Começo com o salto para a verificação da condição
+        code.append(f"br label %{cond_label}")
+
+        # Bloco da condição
+        code.append(f"{cond_label}:")
+        cond_code = self.children[0].Generate(symbol_table)
+        code += cond_code
+        cond_result = f"%temp_{self.children[0].id}"
+        code.append(f"br i1 {cond_result}, label %{body_label}, label %{end_label}")
+
+        # Bloco do corpo do laço
+        code.append(f"{body_label}:")
+        body_code = self.children[1].Generate(symbol_table)
+        code += body_code
+        code.append(f"br label %{cond_label}")  # volta para verificar a condição
+
+        # Fim do laço
         code.append(f"{end_label}:")
+
         return code
 
 

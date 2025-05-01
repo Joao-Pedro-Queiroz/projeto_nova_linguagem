@@ -476,7 +476,35 @@ class Falar(Node):
         return (value, None)
 
     def Generate(self, symbol_table):
-        return []
+        code = []
+
+        expr_code = self.children[0].Generate(symbol_table)
+        code += expr_code
+
+        value_ptr = f"%temp_{self.children[0].id}" if not isinstance(self.children[0], Identifier) else f"%{self.children[0].id}"
+        casted_ptr = f"%cast_{self.id}"
+        cmd_ptr = f"%cmd_{self.id}"
+        cmd_concat = f"%cmd_concat_{self.id}"
+        system_call = f"%system_call_{self.id}"
+
+        # Alocar string "espeak \""
+        prefix = f"@.espeak_prefix = private unnamed_addr constant [9 x i8] c\"espeak \\22\\00\""
+        suffix = f"@.espeak_suffix = private unnamed_addr constant [2 x i8] c\"\\22\\00\""
+
+        # Note: essas constantes devem estar no cabeçalho do programa
+
+        code.append(f"{casted_ptr} = bitcast i8* {value_ptr} to i8*")
+        
+        # Aloca um buffer para montar o comando: "espeak \"<mensagem>\""
+        code.append(f"{cmd_ptr} = call i8* @malloc(i64 256)")
+        code.append(f"%tmp1_{self.id} = call i8* @strcpy(i8* {cmd_ptr}, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.espeak_prefix, i32 0, i32 0))")
+        code.append(f"%tmp2_{self.id} = call i8* @strcat(i8* %tmp1_{self.id}, i8* {casted_ptr})")
+        code.append(f"%tmp3_{self.id} = call i8* @strcat(i8* %tmp2_{self.id}, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.espeak_suffix, i32 0, i32 0))")
+
+        # system(cmd)
+        code.append(f"{system_call} = call i32 @system(i8* {cmd_ptr})")
+
+        return code
     
     
 class If(Node):

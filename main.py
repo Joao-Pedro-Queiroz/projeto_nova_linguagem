@@ -1102,4 +1102,4 @@ if __name__ == "__main__":
         expressao = file.read()
 
     expressao = PrePro.filter(expressao)
-    Parser.run(expressao)
+    Parser.geracodigo(expressao)

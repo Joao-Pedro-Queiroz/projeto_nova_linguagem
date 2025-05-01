@@ -291,7 +291,7 @@ class BoolVal(Node):
     def Generate(self, symbol_table):
         temp_var = f"temp_{self.id}"
         val = "1" if self.value == "VERDADEIRO" else "0"
-        code = [f"%{temp_var} = icmp eq i32 0, {val}"]
+        code = [f"%{temp_var} = icmp eq i1 {val}, 1"]
         return code
 
 
@@ -448,7 +448,7 @@ class Print(Node):
             _, val_type = child.Evaluate(symbol_table)
 
         if val_type == "NUMERO":
-            format_str = "@.int_fmt"
+            format_str = "@.int_print_fmt"
             code.append(f"%call_{self.id} = call i32 (i8*, ...) @printf(i8* {format_str}, i32 {result_var})")
         elif val_type == "BOOLEANO":
             # Converte booleano (i1) em string com ponteiro condicional
@@ -1096,7 +1096,7 @@ if __name__ == "__main__":
     arquivo = sys.argv[1]
 
     if not arquivo.endswith('.lumen'):
-        raise ValueError("O arquivo deve ter a extensão '.zig'.")
+        raise ValueError("O arquivo deve ter a extensão '.lumen'.")
 
     with open(arquivo, 'r') as file:
         expressao = file.read()

@@ -16,33 +16,39 @@ class Code:
             self.instructions.append(instruction)
 
     def dump(self, input_filename="output.zig"):
-        output_name = os.path.splitext(input_filename)[0] + ".asm"
-        
-        with open(output_name, "w") as f:
-            f.write("section .data\n")
-            f.write('   format_out db "%d", 10, 0\n')
-            f.write('   format_in db "%d", 0\n')
-            f.write("   scan_int dd 0\n\n")
+        output_name = os.path.splitext(input_filename)[0] + ".ll"
 
-            f.write("section .text\n\n")
-            f.write("   extern printf\n")
-            f.write("   extern scanf\n")
-            f.write("   extern _ExitProcess@4\n")
-            f.write("   global _start\n\n")
-            f.write("_start:\n")
-            f.write("   push ebp\n")
-            f.write("   mov ebp, esp\n\n")
+        with open(output_name, "w") as f:
+            f.write("; === LLVM IR Module ===\n")
+
+            # === Global Constants ===
+            f.write('@.int_print_fmt = private unnamed_addr constant [4 x i8] c"%d\\0A\\00"\n')
+            f.write('@.int_read_fmt = private unnamed_addr constant [3 x i8] c"%d\\00"\n')
+            f.write('@.str_read_fmt = private unnamed_addr constant [3 x i8] c"%s\\00"\n')
+            f.write('@.newline = private unnamed_addr constant [2 x i8] c"\\0A\\00"\n')
+            f.write('@.true_str = private constant [5 x i8] c"true\\00"\n')
+            f.write('@.false_str = private constant [6 x i8] c"false\\00"\n')
+            f.write('@.espeak_prefix = private unnamed_addr constant [9 x i8] c"espeak \\22\\00"\n')
+            f.write('@.espeak_suffix = private unnamed_addr constant [2 x i8] c"\\22\\00"\n')
+            f.write('\n')
+
+            # === External Function Declarations ===
+            f.write('declare i32 @printf(i8*, ...)\n')
+            f.write('declare i32 @scanf(i8*, ...)\n')
+            f.write('declare i8* @malloc(i64)\n')
+            f.write('declare i8* @strcpy(i8*, i8*)\n')
+            f.write('declare i8* @strcat(i8*, i8*)\n')
+            f.write('declare i32 @system(i8*)\n')
+            f.write('\n')
+
+            # === Main Function ===
+            f.write('define i32 @main() {\n')
 
             for instr in self.instructions:
-                f.write("   " + instr + "\n")
+                f.write("  " + instr + "\n")
 
-            f.write("\n")
-            f.write("   mov esp, ebp\n")
-            f.write("   pop ebp\n\n")
-            f.write("   mov eax, 1\n")
-            f.write("   xor ebx, ebx\n")
-            f.write("   int 0x80\n")
-
+            f.write("  ret i32 0\n")
+            f.write("}\n")
 
 class SymbolTable:
     def __init__(self):

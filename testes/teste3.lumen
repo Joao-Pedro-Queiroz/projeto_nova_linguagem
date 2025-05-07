@@ -1,0 +1,15 @@
+INICIO
+
+    FALAR("Olá! Bom dia!") ;
+
+    FALAR("Bem vindo a linguagem LumenScript!") ;
+
+    FALAR("Nossa linguagem foca em pessoas com baixa visão.") ;
+
+    FALAR("Lembre-se de que, exceto textos, a LumenScript aceita apenas letras maísculas.") ;
+
+    FALAR("Veja os slides ou leia o README presente no repositório dessa linguagem para saber todos os detalhes da linguagem.") ;
+
+    FALAR("Boa programação e lembre-se: Programe com clareza. Programe com Lumen.") ;
+    
+FIM

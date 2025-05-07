@@ -382,6 +382,8 @@ class VarDeC(Node):
             else:
                 code.append(f"store i32 {expr_result}, i32* @{identifier}")
 
+            symbol_table.set(identifier, ("init", type_))
+
         return code
 
 
@@ -418,6 +420,8 @@ class Assignment(Node):
             code.append(f"store i8* {expr_result}, i8** @{var_name}")
         else:
             raise ValueError(f"Tipo de variável desconhecido para atribuição: {var_type}")
+        
+        symbol_table.set(var_name, ("init", var_type))
 
         return code
 
@@ -1102,4 +1106,4 @@ if __name__ == "__main__":
         expressao = file.read()
 
     expressao = PrePro.filter(expressao)
-    Parser.geracodigo(expressao)
+    Parser.geracodigo(expressao, arquivo)
